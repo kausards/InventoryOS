@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Growthomic OS — Feature, Button & Problem Directory (M0–M7)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --primary-light: #EFF6FF;
+      --canvas: #0B0F17;
+      --card-bg: #121826;
+      --card-border: #1E293B;
+      --card-hover-border: #334155;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-sub: #64748B;
+      --success: #10B981;
+      --success-bg: #064E3B;
+      --warning: #F59E0B;
+      --warning-bg: #78350F;
+      --danger: #EF4444;
+      --danger-bg: #7F1D1D;
+      --purple: #8B5CF6;
+      --purple-bg: #4C1D95;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--canvas);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif;
+      line-height: 1.5;
+      padding: 32px 24px 80px;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, rgba(37,99,235,0.15) 0%, rgba(30,41,59,0.4) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 36px 32px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .brand-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(37,99,235,0.2);
+      border: 1px solid rgba(37,99,235,0.4);
+      color: #93C5FD;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      color: #FFFFFF;
+    }
+
+    .header-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.6;
+    }
+
+    .quick-status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--card-border);
+    }
+
+    .status-badge.complete {
+      background: rgba(16,185,129,0.15);
+      border-color: rgba(16,185,129,0.4);
+      color: #6EE7B7;
+    }
+
+    .status-badge.url {
+      background: rgba(37,99,235,0.15);
+      border-color: rgba(37,99,235,0.4);
+      color: #93C5FD;
+    }
+
+    /* SEARCH & FILTER CONTROLS */
+    .controls-panel {
+      position: sticky;
+      top: 16px;
+      z-index: 40;
+      background: rgba(18,24,38,0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(11,15,23,0.8);
+      border: 1px solid var(--card-border);
+      color: #FFFFFF;
+      padding: 12px 16px 12px 42px;
+      border-radius: 14px;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.25);
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-sub);
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #FFFFFF;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFFFFF;
+    }
+
+    /* PAGE SECTION CARDS */
+    .pages-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .page-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .page-card:hover {
+      border-color: var(--card-hover-border);
+    }
+
+    .page-header {
+      padding: 24px 28px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .page-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .page-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(37,99,235,0.15);
+      border: 1px solid rgba(37,99,235,0.3);
+      color: #60A5FA;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .page-meta h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 2px;
+    }
+
+    .page-route {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #93C5FD;
+      background: rgba(37,99,235,0.1);
+      padding: 2px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(37,99,235,0.2);
+    }
+
+    .live-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .live-link-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .page-body {
+      padding: 28px;
+    }
+
+    /* PROBLEM SOLVED BANNER */
+    .problem-banner {
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .problem-icon {
+      color: var(--warning);
+      font-size: 18px;
+      margin-top: 1px;
+    }
+
+    .problem-content h4 {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #FCD34D;
+      margin-bottom: 4px;
+    }
+
+    .problem-content p {
+      font-size: 13.5px;
+      color: #FDE68A;
+      line-height: 1.5;
+    }
+
+    /* BUTTONS & CONTROLS TABLE */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    thead {
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    th {
+      padding: 12px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-sub);
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .btn-name-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      font-size: 12px;
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 4px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .btn-action-text {
+      color: var(--text-main);
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    .btn-problem-text {
+      color: #CBD5E1;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .milestone-badge {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-m0 { background: #334155; color: #94A3B8; }
+    .badge-m1 { background: rgba(59,130,246,0.2); color: #93C5FD; border: 1px solid rgba(59,130,246,0.3); }
+    .badge-m2 { background: rgba(16,185,129,0.2); color: #6EE7B7; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-m3 { background: rgba(245,158,11,0.2); color: #FCD34D; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-m4 { background: rgba(239,68,68,0.2); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
+    .badge-m5 { background: rgba(139,92,246,0.2); color: #C4B5FD; border: 1px solid rgba(139,92,246,0.3); }
+    .badge-m6 { background: rgba(168,85,247,0.2); color: #E9D5FF; border: 1px solid rgba(168,85,247,0.3); }
+    .badge-m7 { background: rgba(249,115,22,0.2); color: #FDBA74; border: 1px solid rgba(249,115,22,0.3); }
+
+    /* FOOTER */
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 13px;
+      padding-top: 24px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .pulse-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+      100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- TOP HEADER -->
+    <header>
+      <div class="brand-tag">
+        <span class="pulse-dot"></span>
+        Growthomic Inventory & Business OS — Interactive Reference
+      </div>
+      <h1>ফিচার, বাটন ও সমস্যা সমাধান ডিরেক্টরি (Feature & Problem Manual)</h1>
+      <p class="header-desc">
+        এই ডিরেক্টরিতে Growthomic OS-এর M0 থেকে M7 পর্যন্ত তৈরি করা প্রতিটা পেজ, মেনু, বাটন, এবং কন্ট্রোল কী কাজ করে এবং ই-কমার্স ব্যবসার কোন বাস্তব সমস্যার সমাধান করে তা বিস্তারিতভাবে দেওয়া হলো।
+      </p>
+
+      <div class="quick-status-row">
+        <div class="status-badge complete">✓ M0: Foundations Done</div>
+        <div class="status-badge complete">✓ M1: SaaS Core & Roles Done</div>
+        <div class="status-badge complete">✓ M2: Products & Inventory Done</div>
+        <div class="status-badge complete">✓ M3: Orders & CRM Done</div>
+        <div class="status-badge complete">✓ M4: Printing & Risk Engine Done</div>
+        <div class="status-badge complete">✓ M5: Courier & COD Settlements Done</div>
+        <div class="status-badge complete">✓ M6: WooCommerce Integration Done</div>
+        <div class="status-badge complete">✓ M7: Returns & Pathao Done</div>
+        <div class="status-badge url">Local Web: http://localhost:3000</div>
+        <div class="status-badge url">Local API: http://localhost:3001/api/v1</div>
+      </div>
+    </header>
+
+    <!-- INTERACTIVE SEARCH & FILTER CONTROLS -->
+    <div class="controls-panel">
+      <div class="search-box">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="যেকোনো বাটন, পেজ, সমস্যা বা ফিচার লিখে খুঁজুন (Search by button, page, or problem)..." onkeyup="filterFeatures()">
+      </div>
+
+      <div class="filter-pills">
+        <button class="filter-btn active" onclick="setFilter('all', this)">All Pages</button>
+        <button class="filter-btn" onclick="setFilter('returns', this)">Returns & Pathao</button>
+        <button class="filter-btn" onclick="setFilter('orders', this)">Orders & Sales</button>
+        <button class="filter-btn" onclick="setFilter('risk', this)">Risk & Fraud Protection</button>
+        <button class="filter-btn" onclick="setFilter('couriers', this)">Couriers & Logistics</button>
+        <button class="filter-btn" onclick="setFilter('finances', this)">COD Settlements</button>
+        <button class="filter-btn" onclick="setFilter('integrations', this)">WooCommerce & Integrations</button>
+        <button class="filter-btn" onclick="setFilter('inventory', this)">Inventory & Stock</button>
+        <button class="filter-btn" onclick="setFilter('products', this)">Products</button>
+        <button class="filter-btn" onclick="setFilter('print', this)">Printing (A4 & POS)</button>
+        <button class="filter-btn" onclick="setFilter('settings', this)">Settings & Team</button>
+      </div>
+    </div>
+
+    <!-- PAGES DIRECTORY -->
+    <div class="pages-grid" id="pagesGrid">
+
+      <!-- 1. ORDERS PAGE -->
+      <section class="page-card" data-category="orders">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">📦</div>
+            <div class="page-meta">
+              <h2>অর্ডার তালিকা ও সেলস ম্যানেজমেন্ট (Orders Page)</h2>
+              <span class="page-route">/orders</span>
+              <span class="milestone-badge badge-m3">Milestone M3 + M4</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/orders" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Page) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                অনলাইন লাইভ বা ফেসবুক মেসেঞ্জারে শত শত অর্ডার আসার পর ডুপ্লিকেট অর্ডার চিহ্নিত না করতে পেরে একই গ্রাহককে দুইবার পার্সেল পাঠানো ও লস হওয়া, ভুয়া ক্রেতাদের কারণে কুরিয়ার রিটার্ন খরচ (৳১৩০-৳১৫০) অপচয় হওয়া, এবং ধীরগতির অর্ডার এন্ট্রির সমস্যা দূর করে।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">⚡ Quick Order Intake</span></td>
+                  <td class="btn-action-text">ডান দিক থেকে একটি হাই-স্পিড অর্ডার ফর্ম ওপেন হয়। ফোন নম্বর টাইপ করা মাত্রই আগের কাস্টমার কিনা চিনে ফেলে, ঠিকানা লোড করে এবং কয়েক সেকেন্ডে অর্ডার কনফার্ম করে।</td>
+                  <td class="btn-problem-text">লাইভ চলাকালীন বা চ্যাটে দ্রুত কাস্টমারের অর্ডার তুলতে না পেরে কাস্টমার চলে যাওয়া রোধ করে। ফোন নাম্বার থেকেই ডিস্ট্রিক্ট ও ডেলিভারি চার্জ অটোমেট করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🛡️ Risk Protection Badge</span></td>
+                  <td class="btn-action-text">অর্ডারের পাশে কালার-কোডেড রিস্ক ব্যাজ দেখায় (Low, Medium, High Alert, New Customer, Approved)।</td>
+                  <td class="btn-problem-text">কোন কাস্টমার ঘন ঘন ক্যানসেল বা রিটার্ন করে তা পার্সেল পাঠানোর আগেই চোখে আঙুল দিয়ে দেখিয়ে দেয়, ফলে রিটার্ন পার্সেল খরচ বাঁচে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🖨️ রো প্রিন্ট আইকন</span></td>
+                  <td class="btn-action-text">নির্দিষ্ট অর্ডারের লাইনে প্রিন্টার আইকনে ক্লিক করলেই মুহূর্তের মধ্যে A4 বাংলা ইনভয়েস পেজ ওপেন হয়।</td>
+                  <td class="btn-problem-text">ম্যানুয়াল মেমো লেখা ছাড়াই দ্রুত নির্ভুল প্রিন্ট মেমো রেডি করে গোডাউন ও কুরিয়ার প্যাকেজিংয়ে গতি আনে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📋 Bulk Print Invoices</span></td>
+                  <td class="btn-action-text">একাধিক অর্ডারের চেকবক্স সিলেক্ট করলে এই বাটন ভেসে ওঠে। ক্লিক করলে সব সিলেক্টেড অর্ডারের ইনভয়েস এক ক্লিকে পেজ-বাই-পেজ প্রিন্ট ভিউতে লোড হয়।</td>
+                  <td class="btn-problem-text">একসাথে ৫০-১০০ পার্সেল পাঠানোর সময় প্রতিটা মেমো আলাদা খুলে প্রিন্ট করার বোরিং ও সময়সাপেক্ষ ঝামেলা দূর করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">⚠️ Duplicate Warning (24h)</span></td>
+                  <td class="btn-action-text">গত ২৪ ঘণ্টায় একই ফোন নম্বরে অন্য অর্ডার থাকলে উজ্জ্বল হলুদ সতর্কবার্তা দেখায়।</td>
+                  <td class="btn-problem-text">ফেসবুক লাইভে একই কাস্টমার একাধিকবার কমেন্ট করায় ভুল করে ২ বার পার্সেল পাঠিয়ে ডেলিভারি চার্জ গচ্চা দেওয়া বন্ধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Filter: Channels & Status</span></td>
+                  <td class="btn-action-text">Facebook, WhatsApp, Phone বা Web অনুযায়ী এবং Pending, Confirmed, Ready to Ship ইত্যাদি স্ট্যাটাসে অর্ডার ফিল্টার করে।</td>
+                  <td class="btn-problem-text">কোন চ্যানেলে বেশি বিক্রি হচ্ছে এবং কোন পার্সেলগুলো গোডাউনে আটকে আছে তা এক নজরে শনাক্ত করা যায়।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. ORDER DETAILS PAGE -->
+      <section class="page-card" data-category="orders">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">🔍</div>
+            <div class="page-meta">
+              <h2>অর্ডার বিস্তারিত ও রিস্ক ওভাররাইড (Order Detail Page)</h2>
+              <span class="page-route">/orders/[id]</span>
+              <span class="milestone-badge badge-m3">Milestone M3 + M4</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/orders/1" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Demo Order) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                অর্ডার নিশ্চিত না হতেই পণ্য প্যাকেজিং করা, ভুল করে স্টক শেষ হয়ে যাওয়া আইটেম বিক্রি করা, এবং ভুয়া অর্ডারের কারণে কর্মীরা না জেনে মাল পাঠিয়ে ক্ষতিগ্রস্থ হওয়া বন্ধ করে।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">✓ Confirm & Reserve Stock</span></td>
+                  <td class="btn-action-text">অর্ডার Confirmed স্ট্যাটাসে যায় এবং ডাটাবেজে গোডাউনের নির্দিষ্ট পণ্যের স্টক অ্যাটমিকভাবে 'Reserved' করে রাখে।</td>
+                  <td class="btn-problem-text">একই পণ্য দুজন ক্রেতাকে বিক্রি করে ফেলার (Overselling / Stockout) চিরন্তন বিড়ম্বনা বন্ধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">❌ Cancel (Release Stock)</span></td>
+                  <td class="btn-action-text">বাধ্যতামূলক কারণ (Reason) চেয়ে অর্ডার বাতিল করে এবং রিজার্ভ করা স্টক স্বয়ংক্রিয়ভাবে আবার বিক্রয়যোগ্য স্টকে ফেরত দেয়।</td>
+                  <td class="btn-problem-text">অর্ডার বাতিল হলেও গোডাউনে মাল পড়ে থাকা এবং সফটওয়্যারে স্টক আটকে থাকার হিসাব গরমিল দূর করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">⏸️ Hold Order</span></td>
+                  <td class="btn-action-text">কারণ লিখে অর্ডার সাময়িক স্থগিত রাখে (যেমন: কাস্টমার বলেছে আগামী সোমবার পাঠাতে)।</td>
+                  <td class="btn-problem-text">ক্রেতার অনুরোধের আগেই পার্সেল চলে যাওয়া এবং কাস্টমার রিসিভ না করায় রিটার্ন লস হওয়া ঠেকায়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🛡️ Review / Override Risk</span></td>
+                  <td class="btn-action-text">ম্যানেজারের জন্য অনুমোদন মডাল খোলে (Approve, Reject, Flag with mandatory explanation)।</td>
+                  <td class="btn-problem-text">হাই-রিস্ক কাস্টমার যদি অগ্রিম ডেলিভারি চার্জ বিকাশে দেয়, ম্যানেজার কারণ লিখে অর্ডারটি শিটের বাইরে গিয়েও বৈধ করতে পারেন।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔄 Re-evaluate</span></td>
+                  <td class="btn-action-text">তাত্ক্ষণিকভাবে ব্যাকএন্ডের রিস্ক ইঞ্জিন কল করে কাস্টমারের ফোন ও হিস্ট্রি রি-চেক করে স্কোর রিফ্রেশ করে।</td>
+                  <td class="btn-problem-text">পুরনো ক্যাশ ডেটার বদলে রিয়েল-টাইম কাস্টমার স্ট্যাটাস যাচাই নিশ্চিত করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📄 Invoice / 80mm / Packing</span></td>
+                  <td class="btn-action-text">হেডারের ৩টি বাটন দিয়ে যথাক্রমে A4 ক্যাশ মেমো, ছোট POS থার্মাল স্লিপ বা গোডাউন প্যাকিং স্লিপ প্রিন্ট পেজ ওপেন হয়।</td>
+                  <td class="btn-problem-text">কাউন্টার সেলস বা ডেলিভারির জন্য যে প্রিন্টারই দোকানে থাকুক না কেন (লেজার বা পিওএস), এক ক্লিকে সঠিক ফরমেটে প্রিন্ট পাওয়া যায়।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. RISK ENGINE SETTINGS -->
+      <section class="page-card" data-category="risk">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">🛡️</div>
+            <div class="page-meta">
+              <h2>রিস্ক ও ফ্রড প্রোটেকশন ইঞ্জিন (Risk & Fraud Protection)</h2>
+              <span class="page-route">/settings/risk</span>
+              <span class="milestone-badge badge-m4">Milestone M4</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/settings/risk" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Risk Settings) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                প্রতি মাসে হাজার হাজার টাকার সিওডি (COD) কুরিয়ার রিটার্ন ড্যামেজ। অসৎ ক্রেতা বা প্রতিযোগী যারা ভুয়া ঠিকানা দিয়ে পার্সেল অর্ডার করে কিন্তু ডেলিভারি নেয় না, তাদের স্বয়ংক্রিয়ভাবে ফিল্টার করে প্রতিরোধ করা।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">Min Eligible Orders Slider</span></td>
+                  <td class="btn-action-text">গ্রাহকের ন্যূনতম ডেলিভারি হিস্ট্রি নির্ধারণ করে (ডিফল্ট ৩)। এর চেয়ে কম হলে সিস্টেম 'New Customer' দেখায়, কখনো 'Low Risk' ধরে না।</td>
+                  <td class="btn-problem-text">নতুন কোনো অপরিচিত ক্রেতাকে ভুল করে 'নিরাপদ' ভেবে চোখ বন্ধ করে পার্সেল পাঠিয়ে প্রতারিত হওয়া রোধ করে (Gate 1 Policy)।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Cancellation & Return Sliders</span></td>
+                  <td class="btn-action-text">গ্রাহকের ক্যান্সেলেশন রেট (যেমন ৪০%) বা রিটার্ন রেট (যেমন ২৫%) পার হলে অর্ডারে লাল হাই-রিস্ক অ্যালার্ট সেট করে।</td>
+                  <td class="btn-problem-text">অভ্যাসগত পার্সেল প্রত্যাখ্যানকারী ক্রেতাদের কাছে বারবার পার্সেল পাঠানো বন্ধ করে ডেলিভারি খরচ বাঁচায়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Auto-Flag & Review Toggles</span></td>
+                  <td class="btn-action-text">হাই-রিস্ক অর্ডার স্বয়ংক্রিয় চিহ্নিত করা এবং ম্যানেজার অনুমোদন ছাড়া শিপিং ব্লক রাখার পলিসি চালু/বন্ধ করে।</td>
+                  <td class="btn-problem-text">প্যাকিং কর্মীরা ভুলবশত বা অসাবধানতায় ঝুঁকিপূর্ণ পার্সেল কুরিয়ারে তুলে দেওয়া প্রতিহত করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">💾 Save Rule Changes</span></td>
+                  <td class="btn-action-text">মডাল ওপেন করে এবং পরিবর্তনের কারণ (Reason) চেয়ে রুল হিস্ট্রি অডিটে সেভ করে।</td>
+                  <td class="btn-problem-text">কে, কেন এবং কখন রিস্ক পলিসি পরিবর্তন করেছিল তার অপরিবর্তনীয় অডিট ট্রেইল সংরক্ষণ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">➕ Add Phone to Blocklist</span></td>
+                  <td class="btn-action-text">প্রতারক কাস্টমারের নম্বর ও কারণ লিখে ব্ল্যাকলিস্ট বা ওয়াচলিস্টে যুক্ত করে। বাংলাদেশের +880 ফরম্যাট অটো-চেক করে।</td>
+                  <td class="btn-problem-text">যেকোনো পরিচিত প্রতারক নম্বর একবার ব্লক করলে ভবিষ্যতে সে অন্য নামেও অর্ডার করলে সিস্টেম তাকে আটকে দেয়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Enable / Disable Switch</span></td>
+                  <td class="btn-action-text">ব্ল্যাকলিস্টে থাকা যেকোনো ফোন নম্বর এক ক্লিকে সাময়িক ডিঅ্যাক্টিভেট বা রি-অ্যাক্টিভেট করে।</td>
+                  <td class="btn-problem-text">ভুলবশত কোনো কাস্টমার ব্লক হলে তাকে আবার কাস্টমার সার্ভিসের মাধ্যমে সক্রিয় করার সুবিধা দেয়।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. PRINTING TEMPLATES -->
+      <section class="page-card" data-category="print">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">🖨️</div>
+            <div class="page-meta">
+              <h2>দ্বিভাষিক প্রিন্টিং ইঞ্জিন (A4 & 80mm Thermal Printing)</h2>
+              <span class="page-route">/print/[type]</span>
+              <span class="milestone-badge badge-m4">Milestone M4</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/print/invoice?orderId=demo-1&format=a4&lang=bn" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Demo Invoice) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                ইংরেজি না বোঝা সাধারণ গ্রাহকদের জন্য বাংলায় চালান মেমো না থাকা, পিওএস মেশিনে প্রিন্ট করতে গিয়ে লেখা কেটে যাওয়া, এবং মেমো জালিয়াতি প্রতিরোধ করা।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">A4 Normal vs 80mm Thermal</span></td>
+                  <td class="btn-action-text">এক ক্লিকে ফুল A4 সাইজ লেআউট অথবা সরু কাউন্টার রসিদ (৮০ মিমি মনোস্পেস পিওএস স্লিপ)-এ ফরম্যাট পরিবর্তন করে।</td>
+                  <td class="btn-problem-text">দোকানের সাধারণ কম্পিউটার প্রিন্টার এবং প্যাকেজিং কাউন্টারের থার্মাল রসিদ প্রিন্টার দুটোর জন্যই পারফেক্ট মাপ দেয়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">English / বাংলা টগল</span></td>
+                  <td class="btn-action-text">মেমোর প্রতিটি শিরোনাম (চালান নং, আইটেম বিবরণ, উপমোট, ডেলিভারি চার্জ, মোট প্রদেয় টাকা) খাঁটি বাংলায় রূপান্তর করে।</td>
+                  <td class="btn-problem-text">বাংলাদেশের প্রত্যন্ত অঞ্চলের গ্রাহক ও ডেলিভারি ম্যানরা যেন পণ্যের দাম ও চার্জ সহজে বুঝতে পারে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🖨️ Print Now বাটন</span></td>
+                  <td class="btn-action-text">ব্রাউজারের প্রিন্ট ডায়ালগ ওপেন করে এবং ব্যাকএন্ডে একটি ক্রিপ্টোগ্রাফিক HMAC সিকিউর 'print_log' অডিট এন্ট্রি সংরক্ষণ করে।</td>
+                  <td class="btn-problem-text">কোন কর্মী কোন মেমো কতবার প্রিন্ট করেছে তার সুনির্দিষ্ট হিসাব রাখে, যাতে ভুয়া মেমো প্রিন্ট করে কেউ ক্যাশ চুরি করতে না পারে।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. INVENTORY & STOCK -->
+      <section class="page-card" data-category="inventory">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">🏢</div>
+            <div class="page-meta">
+              <h2>ইনভেন্টরি ও মাল্টি-ওয়্যারহাউস স্টক (Inventory & Stock)</h2>
+              <span class="page-route">/inventory</span>
+              <span class="milestone-badge badge-m2">Milestone M2</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/inventory" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Inventory) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                গোডাউনে পণ্য চুরি হওয়া বা নষ্ট হওয়া সত্ত্বেও খাতার হিসেবে গরমিল থাকা, সফটওয়্যারে স্টক নেগেটিভ হয়ে যাওয়া, এবং ঢাকা ও ঢাকার বাইরের গোডাউনের মধ্যে সঠিক স্টকের তথ্য না থাকা।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">⚡ Stock Adjustment Drawer</span></td>
+                  <td class="btn-action-text">স্লাইড-ওভার ড্রয়ার ওপেন করে নির্দিষ্ট গোডাউনের পণ্য যোগ বা বিয়োগ করার জন্য। বাধ্যতামূলক কারণ (Damage, Theft, Return, Audit) নেওয়া হয়।</td>
+                  <td class="btn-problem-text">পণ্য নষ্ট হলে বা চুরি হলে কর্মীরা লুকিয়ে স্টক পরিবর্তন করতে পারে না; পরিবর্তনের পেছনের কারণ ও স্টাফের নাম স্থায়ীভাবে সেভ থাকে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔍 Run Drift Check</span></td>
+                  <td class="btn-action-text">তাত্ক্ষণিকভাবে সম্পূর্ণ লেজার মুভমেন্টের যোগফলের সাথে বর্তমান স্টক ব্যালেন্স মিলিয়ে হিসাবের কোনো অসঙ্গতি আছে কিনা যাচাই করে।</td>
+                  <td class="btn-problem-text">সার্ভার ক্র্যাশ বা নেটওয়ার্ক ড্রপের কারণে স্টক সংখ্যা ও লেজারের হিসাব অমিল (Drift) হওয়া ঠেকায়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Warehouse Selector</span></td>
+                  <td class="btn-action-text">ঢাকা প্রধান গোডাউন, চট্টগ্রাম হাব ইত্যাদি একাধিক গোডাউনের আলাদা আলাদা মজুদ সংখ্যা দেখায়।</td>
+                  <td class="btn-problem-text">কোন গোডাউনে কত মাল আছে তা আলাদা করে বুঝতে সাহায্য করে এবং আন্তঃগোডাউন ট্রান্সফার নির্ভুল করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Immutable Ledger Feed</span></td>
+                  <td class="btn-action-text">প্রতিটি একক পণ্যের ইনওয়ার্ড, আউটওয়ার্ড ও রিজার্ভেশনের টাইমস্ট্যাম্পযুক্ত অপরিবর্তনীয় হিসাবের বই।</td>
+                  <td class="btn-problem-text">অডিটের সময় যেকোনো গরমিল ধরিয়ে দেয়; ডাটাবেজ থেকেও এই হিসাব কেউ মুছে বা এডিট করতে পারে না।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. PRODUCTS & BUNDLES -->
+      <section class="page-card" data-category="products">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">🏷️</div>
+            <div class="page-meta">
+              <h2>প্রোডাক্ট ক্যাটালগ ও বান্ডেল (Products & Variants)</h2>
+              <span class="page-route">/products</span>
+              <span class="milestone-badge badge-m2">Milestone M2</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/products" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Products) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                সাইজ বা কালার অনুযায়ী পণ্যের SKU আলাদা না করায় গোডাউন কর্মীরা ভুল সাইজের জামা বা জুতো পাঠিয়ে দেওয়া, এবং কম্বো অফারে (Combo Pack) একটি আইটেম শেষ হয়ে গেলেও কম্বো বিক্রি চালিয়ে কাস্টমারের কাছে অপ্রস্তুত হওয়া।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">➕ Add New Product</span></td>
+                  <td class="btn-action-text">নতুন পণ্যের বিবরণ, ক্যাটাগরি, ব্র্যান্ড, ক্রয়মূল্য ও খুচরা মূল্য দিয়ে সিস্টেমে পণ্য এন্ট্রি করার ড্রয়ার খোলে।</td>
+                  <td class="btn-problem-text">ব্যবসার লাভ-ক্ষতি (Margin) ও স্টক ট্র্যাকিংয়ের সঠিক ভিত্তি তৈরি করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Matrix Variant Generator</span></td>
+                  <td class="btn-action-text">রং (Red, Blue) ও সাইজ (M, L, XL) সিলেক্ট করলে নিজে থেকেই সবগুলো কম্বিনেশনের ইউনিক SKU কোড তৈরি করে দেয়।</td>
+                  <td class="btn-problem-text">ম্যানুয়ালি প্রতিটি ভ্যারিয়েন্টের নাম ও কোড লেখার সময় বানান ভুল বা একই কোড দুবার দেওয়ার সমস্যা দূর করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Bundle Availability Engine</span></td>
+                  <td class="btn-action-text">কম্বো প্যাকে থাকা যেকোনো একটি কম্পোনেন্ট শেষ হয়ে গেলে স্বয়ংক্রিয়ভাবে পুরো কম্বোর এভেইল্যাবিলিটি ০ (শূন্য) করে দেয়।</td>
+                  <td class="btn-problem-text">শার্ট আছে কিন্তু প্যান্টের স্টক শেষ—এই অবস্থায় শার্ট-প্যান্টের কম্বো বিক্রি হয়ে যাওয়ার বিপদ প্রতিহত করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🏷️ Print Barcodes</span></td>
+                  <td class="btn-action-text">পণ্যের এসকেইউ দিয়ে প্রিন্ট-রেডি বারকোড বা স্টিকার জেনারেট করে।</td>
+                  <td class="btn-problem-text">প্যাকেজিং ও স্ক্যানার দিয়ে মাল ডেলিভারি করার সময় মানুষের চোখ দিয়ে দেখে ভুল প্রোডাক্ট পাঠানো বন্ধ করে।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. CUSTOMERS CRM -->
+      <section class="page-card" data-category="orders">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">👥</div>
+            <div class="page-meta">
+              <h2>কাস্টমার ম্যানেজমেন্ট ও সিআরএম (Customer CRM)</h2>
+              <span class="page-route">/customers</span>
+              <span class="milestone-badge badge-m3">Milestone M3</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/customers" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Customers) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                একই ক্রেতা বিভিন্ন সময় `017...`, `+88017...`, বা `88017...` দিয়ে অর্ডার করলে একাধিক আলাদা প্রোফাইল তৈরি হওয়া, এবং প্রিমিয়াম নিয়মিত ক্রেতাকে সাধারণ ক্রেতা ভেবে ডিসকাউন্ট বা ভালো সেবা না দেওয়ার ভুল শুধরে নেওয়া।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">BD Phone Normalization</span></td>
+                  <td class="btn-action-text">যেভাবেই ফোন নম্বর লেখা হোক না কেন, সিস্টেম নিজে থেকে সেটিকে আন্তর্জাতিক ই.১৬৪ ফরম্যাটে (+880...) রূপান্তর করে প্রোফাইল মার্জ করে।</td>
+                  <td class="btn-problem-text">একই ক্রেতার দুই-তিনটি প্রোফাইল হয়ে হিস্ট্রি হারিয়ে যাওয়া রোধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Delivery Success Rate %</span></td>
+                  <td class="btn-action-text">গ্রাহক পূর্বে অর্ডারকৃত পণ্যের কত শতাংশ ডেলিভারি গ্রহণ করেছেন তা শতকরা হিসেবে দেখায় (যেমন: ৯৫%)।</td>
+                  <td class="btn-problem-text">বিশ্বস্ত কাস্টমারকে সাথে সাথে পণ্য পাঠানো এবং কম সাকসেস রেটের কাস্টমারকে ফোন দিয়ে ভেরিফাই করার সুযোগ দেয়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">Lifetime Spend (LTV)</span></td>
+                  <td class="btn-action-text">গ্রাহকের এযাবতকালে খরচ করা মোট টাকার হিসাব দেখায়।</td>
+                  <td class="btn-problem-text">ব্যবসার সবচেয়ে মূল্যবান VIP ক্রেতাদের সহজেই চিহ্নিত করে স্পেশাল অফার বা গিফট দেওয়ার সুযোগ তৈরি করে।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. SETTINGS & ROLES -->
+      <section class="page-card" data-category="settings">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">⚙️</div>
+            <div class="page-meta">
+              <h2>টিম, রোল ও পারমিশন কন্ট্রোল (Settings & Roles)</h2>
+              <span class="page-route">/settings/roles</span>
+              <span class="milestone-badge badge-m1">Milestone M1</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/settings/roles" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Settings) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                দোকানের সাধারণ সেলস কর্মীরা ব্যবসার আসল ক্রয়মূল্য বা প্রফিট দেখে ফেলা, যে কেউ অনুমতি ছাড়া স্টক বা দাম বাড়িয়ে নেওয়া, এবং ভুল করে অনার (Owner)-কে সিস্টেম থেকে মুছে দিয়ে মালিকের একাউন্ট লক হয়ে যাওয়া প্রতিরোধ করে।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">➕ Invite Team Member</span></td>
+                  <td class="btn-action-text">কর্মীর ইমেইল ও নির্ধারিত রোল (যেমন: Order Staff, Inventory Staff) দিয়ে টিমে যুক্ত করার মডাল খোলে।</td>
+                  <td class="btn-problem-text">একই পাসওয়ার্ড সবাই ব্যবহার করার বিপদ বন্ধ করে এবং প্রতিটি কাজের ব্যক্তিভিত্তিক জবাবদিহিতা নিশ্চিত করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🛡️ Last-Owner Protection</span></td>
+                  <td class="btn-action-text">প্রতিষ্ঠানের একমাত্র অনার (Owner)-কে ডিমোট বা ডিলিট করার চেষ্টা করলে সার্ভার স্বয়ংক্রিয়ভাবে প্রত্যাখ্যান করে।</td>
+                  <td class="btn-problem-text">ভুল করে অনারের ক্ষমতা হারিয়ে কোম্পানি লকডাউনে পড়ে যাওয়ার মারাত্মক দুর্ঘটনা প্রতিহত করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">42 Granular Permissions</span></td>
+                  <td class="btn-action-text">৪২টি আলাদা চেকবক্স (অর্ডার দেখা, স্টক বদলানো, মেমো প্রিন্ট করা, ইত্যাদি) দিয়ে কাস্টম রোল বানানো যায়।</td>
+                  <td class="btn-problem-text">কর্মীকে ঠিক ততটুকুই পাওয়ার দেওয়া হয় যতটুকু তার দায়িত্বের জন্য দরকার, কোনো স্পর্শকাতর অপশন তাকে দেওয়া হয় না।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. COURIER INTEGRATION & GATEWAY -->
+      <section class="page-card" data-category="couriers">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">🚚</div>
+            <div class="page-meta">
+              <h2>কুরিয়ার ইন্টিগ্রেশন ও গেটওয়ে কনফিগারেশন (Courier Integration & Gateway)</h2>
+              <span class="page-route">/settings/couriers</span>
+              <span class="milestone-badge badge-m5">Milestone M5</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/settings/couriers" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Couriers) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                প্রতিদিন শত শত অর্ডারের কুরিয়ার পোর্টালে গিয়ে ম্যানুয়ালি নাম-ঠিকানা কপি-পেস্ট করা অত্যন্ত সময়সাপেক্ষ ও টাইপিং ভুলের ঝুঁকিপূর্ণ। এছাড়াও কুরিয়ার এপিআই কী ডাটাবেজে প্লেইনটেক্সট থাকলে সাইবার অ্যাটাকে তা চুরি হতে পারে। এই গেটওয়ে AES-256-GCM ক্রিপ্টোগ্রাফি দিয়ে ক্রেডেনশিয়াল সুরক্ষিত রেখে এক ক্লিকে সরাসরি বুকিং ও লাইভ ব্যালেন্স চেক নিশ্চিত করে।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">➕ Connect Courier</span></td>
+                  <td class="btn-action-text">নতুন কুরিয়ার সার্ভিস (যেমন: Steadfast) যুক্ত করার জন্য সিকিউর কনফিগারেশন মডাল ওপেন করে।</td>
+                  <td class="btn-problem-text">বিভিন্ন কুরিয়ার অ্যাকাউন্ট সেন্ট্রাল এক জায়গা থেকে ম্যানেজ করার সক্ষমতা দেয়, বারবার পোর্টালে লগইন করার ঝামেলা শেষ।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔐 AES-256-GCM Secrets (Gate 4)</span></td>
+                  <td class="btn-action-text">কুরিয়ারের API Key ও Secret Key সিস্টেমে সেভ করার সময় মিলিটারি-গ্রেড অথেনটিকেটেড এনক্রিপশন ব্যবহার করে এবং ব্রাউজারে মাস্কড (******) আকারে রাখে।</td>
+                  <td class="btn-problem-text">ডাটাবেজ বা নেটওয়ার্ক প্যাকেট ইন্সপেকশনে কুরিয়ারের গোপন চাবি কখনো ফাঁস হতে দেয় না। হ্যাকার বা অসৎ কর্মী চাবি চুরি করে ডেলিভারি অর্ডার হাইজ্যাক করতে পারে না।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔌 Test Connection</span></td>
+                  <td class="btn-action-text">কুরিয়ার কোম্পানির সার্ভারে লাইভ পিং পাঠিয়ে এপিআই চাবি সঠিক আছে কিনা এবং সার্ভার রেসপন্স করছে কিনা তাৎক্ষণিক যাচাই করে।</td>
+                  <td class="btn-problem-text">ভুল এপিআই কী দিয়ে পার্সেল পাঠানোর চেষ্টা করে কাস্টমারের অর্ডার আটকে যাওয়ার আগেই সংযোগ ত্রুটি ধরিয়ে দেয়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">💰 Steadfast Live Balance</span></td>
+                  <td class="btn-action-text">স্টিডফাস্ট ওয়ালেটে ব্যবসায়ীর কুরিয়ার পেমেন্ট বা বর্তমান ব্যালেন্স কত টাকা জমা আছে তা সরাসরি এপিআই দিয়ে ফেচ করে দেখায়।</td>
+                  <td class="btn-problem-text">ব্যবসায়ীকে কুরিয়ার অ্যাকাউন্টের ব্যালেন্স চেক করার জন্য আলাদা ট্যাবে লগইন করতে হয় না; সিস্টেমের ভেতর থেকেই আর্থিক স্বাস্থ্য দেখা যায়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">⭐ Set as Primary</span></td>
+                  <td class="btn-action-text">কোন কুরিয়ারকে ডিফল্ট ডিসপ্যাচ পার্টনার করা হবে তা রেডিও বাটনে সিলেক্ট করে সংরক্ষণ করে।</td>
+                  <td class="btn-problem-text">অর্ডার ডিসপ্যাচ করার সময় প্রতিবার কুরিয়ার বাছাই করার অতিরিক্ত ক্লিক কমিয়ে ওয়ান-ক্লিক ডিসপ্যাচ সহজ করে।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. ORDER DISPATCH & LIVE TRACKING -->
+      <section class="page-card" data-category="couriers">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">📦</div>
+            <div class="page-meta">
+              <h2>পার্সেল বুকিং, লাইভ ট্র্যাকিং ও টার্মিনাল প্রোটেকশন (Order Dispatch & Tracking)</h2>
+              <span class="page-route">/orders/[id]</span>
+              <span class="milestone-badge badge-m5">Milestone M5</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/orders" target="_blank" class="live-link-btn">
+            অর্ডারে দেখুন (Go to Orders) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                ইন্টারনেট সমস্যা বা এপিআই স্লো হলে একই পার্সেল দুইবার বুকিং হয়ে ডাবল ডেলিভারি চার্জ কাটা যাওয়া (Gate 1 - Ambiguous Timeout Risk); এবং কুরিয়ারের ব্যাকওয়ার্ড বা ভুল ট্র্যাকিং ইভেন্টের কারণে ডেলিভার্ড হয়ে যাওয়া পার্সেল আবার ইন-ট্রানজিট দেখানো প্রতিহত করে (Gate 2 - Terminal Status Protection)।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">🚀 Send to Steadfast</span></td>
+                  <td class="btn-action-text">গ্রাহকের ফোন, ডেলিভারি ঠিকানা ও মোট COD কালেকশন অ্যামাউন্ট সরাসরি স্টিডফাস্ট কুরিয়ারে বুক করে কনসাইনমেন্ট আইডি (CID) ও ট্র্যাকিং কোড গ্রহণ করে।</td>
+                  <td class="btn-problem-text">ম্যানুয়াল এন্ট্রি বন্ধ করে প্যাকেজিং থেকে শিপিংয়ের গতি ১০ গুণ বাড়িয়ে দেয়। প্যাকেটে সরাসরি ট্র্যাকিং বারকোড সাঁটানো যায়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔄 Live Track (Sync)</span></td>
+                  <td class="btn-action-text">কুরিয়ার সার্ভার থেকে পার্সেলের বর্তমান অবস্থান (ইন-ট্রানজিট, আউট ফর ডেলিভারি, ইত্যাদি) রিয়েল-টাইমে আপডেট করে টাইমলাইনে যুক্ত করে।</td>
+                  <td class="btn-problem-text">গ্রাহক ফোন করে "আমার পার্সেল এখন কোথায়?" জানতে চাইলে কাস্টমার সাপোর্ট এজেন্ট ১ সেকেন্ডে সঠিক উত্তর দিতে পারে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">⚠️ Reconcile Timed-out (Gate 1)</span></td>
+                  <td class="btn-action-text">নেটওয়ার্ক ড্রপ বা টাইমআউট হলে সিস্টেম স্বয়ংক্রিয়ভাবে পার্সেলকে 'unknown_pending_reconciliation' দিয়ে লক করে এবং ম্যানুয়াল রিকনসিল মডাল খোলে ('Confirm Found' বা 'Mark Cancelled')।</td>
+                  <td class="btn-problem-text">স্লো নেটের কারণে কনফিউজড হয়ে কর্মী যাতে দ্বিতীয়বার বুকিং না করে ফেলে। ডুপ্লিকেট পার্সেল পাঠানো ও ডাবল কুরিয়ার চার্জ গচ্চা যাওয়া ১০০% বন্ধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🛡️ Terminal Status Lock (Gate 2)</span></td>
+                  <td class="btn-action-text">পার্সেল একবার 'delivered' বা 'returned' হয়ে গেলে কুরিয়ারের পক্ষ থেকে কোনো ভুল বা পুরোনো ইভেন্ট আসলে তা টার্মিনাল স্টেট ভাঙতে পারে না।</td>
+                  <td class="btn-problem-text">কুরিয়ার কোম্পানির আউট-অফ-অর্ডার বাগ বা সার্ভার ত্রুটিতে সম্পন্ন হওয়া অর্ডার আবার পেন্ডিং হয়ে ইনভেন্টরি ও আর্থিক হিসেবে বিশৃঙ্খলা সৃষ্টি করতে পারে না।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📜 Immutable Audit Timeline</span></td>
+                  <td class="btn-action-text">পার্সেল বুকিংয়ের সময় থেকে ডেলিভারি হওয়া পর্যন্ত প্রতিটা ইভেন্ট অপরিবর্তনীয় (Append-only) ট্র্যাকিং হিস্ট্রিতে রেকর্ড করে রাখে।</td>
+                  <td class="btn-problem-text">কুরিয়ার বা ডেলিভারি ম্যানের সাথে কোনো বিবাদ হলে কখন পার্সেল পিকআপ হয়েছিল এবং কখন ডেলিভারির চেষ্টা হয়েছিল তার নির্ভুল ডিজিটাল প্রমাণ দেয়।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. COD SETTLEMENTS & STATEMENTS -->
+      <section class="page-card" data-category="finances">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">💳</div>
+            <div class="page-meta">
+              <h2>সিওডি সেটেলমেন্ট ও ইনভয়েস রিকনসিলিয়েশন (COD Settlement Statements)</h2>
+              <span class="page-route">/finances/settlements</span>
+              <span class="milestone-badge badge-m5">Milestone M5</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/finances/settlements" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Settlements) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                কুরিয়ার কোম্পানিগুলো মাস শেষে বা সপ্তাহ শেষে একসাথে অনেক অর্ডারের টাকা দেয়, কিন্তু কোন পার্সেল বাবদ কত ডেলিভারি ফি কাটা হলো, রিটার্ন চার্জ কত কাটা হলো এবং নিট ব্যাংকে কত জমা হলো—তা ম্যানুয়ালি মেলানো প্রায় অসম্ভব। এই পেজ প্রতিটা পয়সার স্বয়ংক্রিয় হিসাব ও ভাউচার রিকনসিল করে।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">📥 Import Courier Statement</span></td>
+                  <td class="btn-action-text">কুরিয়ারের প্রেরিত স্টেটমেন্ট নম্বর, মোট সিওডি কালেকশন, কুরিয়ার ফি ও ব্যাংকে ট্রান্সফার করা নিট টাকার ভাউচার এন্ট্রি নেওয়ার মডাল খোলে।</td>
+                  <td class="btn-problem-text">কুরিয়ারের দেওয়া সাপ্তাহিক বা মাসিক পেমেন্ট শিটের সম্পূর্ণ হিসাব সফটওয়্যারে নির্ভুলভাবে রেকর্ডভুক্ত হয়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📊 Financial KPI Summary Cards</span></td>
+                  <td class="btn-action-text">গ্রস সিওডি কত টাকা কালেকশন হয়েছে, ডেলিভারি চার্জ বাবদ কত কাটা গেছে এবং ব্যবসায়ীর ব্যাংক অ্যাকাউন্টে মোট কত নিট টাকা জমা হয়েছে তা ক্যালকুলেট করে দেখায়।</td>
+                  <td class="btn-problem-text">ব্যবসার ক্যাশ-ফ্লো পরিষ্কার দেখা যায় এবং কুরিয়ার কোম্পানি অতিরিক্ত কোনো ফি কেটেছে কিনা তা তৎক্ষণাৎ ধরা পড়ে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔍 Statement Reconciliation</span></td>
+                  <td class="btn-action-text">স্টেটমেন্টের অধীন প্রতিটি পার্সেলের অর্ডারের সাথে প্রকৃত ব্যাংক ডিপোজিট মিলিয়ে 'reconciled' স্ট্যাটাস প্রদান করে।</td>
+                  <td class="btn-problem-text">কুরিয়ারের হারিয়ে যাওয়া বা অমীমাংসিত পার্সেলের কারণে ব্যবসায়ীর টাকা আটকে থাকা রোধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📄 Allocation Voucher Details</span></td>
+                  <td class="btn-action-text">কোন কোন অর্ডার আইডির টাকা উক্ত পেমেন্ট ব্যাচে সেটেল করা হলো তার তালিকা ও চার্জের ব্রেকডাউন দেখায়।</td>
+                  <td class="btn-problem-text">অ্যাকাউন্টিং টিম ও অডিটরদের জন্য সুনির্দিষ্ট প্রমাণ তৈরি করে, কোনো অর্ডারের টাকা বকেয়া রয়ে গেল কিনা তা চিহ্নিত করা যায়।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12. WOOCOMMERCE STORE INTEGRATION -->
+      <section class="page-card" data-category="integrations">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">🌐</div>
+            <div class="page-meta">
+              <h2>ওয়ার্ডপ্রেস ও উকমার্স স্টোর ইন্টিগ্রেশন (WooCommerce Integration Gateway)</h2>
+              <span class="page-route">/settings/integrations</span>
+              <span class="milestone-badge badge-m6">Milestone M6</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/settings/integrations" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Store Integrations) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                অনলাইন ওয়েবসাইটে নতুন অর্ডার আসলে তা ম্যানুয়ালি দেখে দেখে সফটওয়্যারে টাইপ করার ক্লান্তি ও মিস হওয়ার ঝুঁকি দূর করে; ওয়েবসাইটে এক স্টক কিন্তু গুদামে অন্য স্টক থাকার কারণে "Out-of-Stock" প্রোডাক্ট বিক্রি হয়ে কাস্টমার অসন্তোষ বন্ধ করে; এবং হ্যাকাররা ভুয়া সার্ভার আইপি দিয়ে যাতে ব্যবসায়ীর ইন্টারনাল ডাটাবেজে আক্রমণ (SSRF) করতে না পারে তার সামরিক গ্রেড ফায়ারওয়াল প্রোটেকশন দেয়।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">➕ Connect WooCommerce Store</span></td>
+                  <td class="btn-action-text">উকমার্স ওয়েবসাইটের URL, Consumer Key ও Consumer Secret দিয়ে লাইভ স্টোর কানেক্ট করার সিকিউর মডাল খোলে।</td>
+                  <td class="btn-problem-text">কোনো জটিল প্লাগইন ইনস্টলেশন ছাড়াই অফিসিয়াল WooCommerce REST API v3 দিয়ে কয়েক সেকেন্ডে অটোমেশন চালু করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🛡️ SSRF Attack Firewall (Gate 4)</span></td>
+                  <td class="btn-action-text">স্টোর কানেক্ট করার সময় স্বয়ংক্রিয়ভাবে লোকালহোস্ট (127.0.0.1), প্রাইভেট নেটওয়ার্ক (10.x, 192.168.x) ও ক্লাউড মেটাডাটা আইপি ব্লক করে।</td>
+                  <td class="btn-problem-text">দুর্বৃত্তরা ফেক স্টোর ইউআরএল দিয়ে কোম্পানির ইন্টারনাল সার্ভার ও ক্লাউড ক্রেডেনশিয়াল হ্যাক করা শতভাগ প্রতিরোধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔐 AES-256-GCM Masked Keys</span></td>
+                  <td class="btn-action-text">উকমার্সের Consumer Key ও Secret ডাটাবেজে এনক্রিপ্ট করে এবং ফ্রন্টএন্ডে শুধুমাত্র মাস্কড (ck_...****) আকারে প্রদর্শন করে।</td>
+                  <td class="btn-problem-text">কর্মীদের সামনে বা স্ক্রিনশেয়ারে ওয়েবসাইটের গোপন পাসওয়ার্ড ফাঁস হওয়া রোধ করে এবং সাইবার হামলা থেকে ওয়েবসাইট রক্ষা করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔄 Sync Products (Catalog)</span></td>
+                  <td class="btn-action-text">ওয়েবসাইট থেকে সমস্ত সিম্পল ও ভ্যারিয়েবল প্রোডাক্ট, দাম ও স্টক এক ক্লিকে সফটওয়্যারে ফেচ করে নিয়ে আসে।</td>
+                  <td class="btn-problem-text">নতুন প্রোডাক্ট ওয়েবসাইটে আপলোড করার পর ইনভেন্টরি ম্যানেজারে আবার ডাবল এন্ট্রি দেওয়ার সময় ও শ্রম বাঁচায়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🧩 Product & Variant Mapping</span></td>
+                  <td class="btn-action-text">ওয়েবসাইটের প্রোডাক্টের সাথে গুদামের আসল প্রোডাক্ট ভ্যারিয়েন্ট (SKU) লিংক করায় এবং আনম্যাপড আইটেমগুলো ফ্ল্যাগ করে।</td>
+                  <td class="btn-problem-text">ওয়েবসাইটে প্রোডাক্টের নাম ভিন্ন হলেও গুদামের সঠিক আইটেমটি যেন ডিসপ্যাচ ও স্টক মাইনাস হয় তা নিশ্চিত করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">⚡ HMAC-SHA256 Webhooks (Gate 2)</span></td>
+                  <td class="btn-action-text">ওয়েবসাইটে অর্ডার হওয়া মাত্রই লাইভ ওয়েবহুক সিগনেচার যাচাই করে ১ সেকেন্ডে ইনভেন্টরি সিস্টেমে ইনজেস্ট করে।</td>
+                  <td class="btn-problem-text">ভুয়া বা জালিয়াত চক্রের পাঠানো ফেক অর্ডার রিকোয়েস্ট সিগনেচার অমিলের কারণে ইনস্ট্যান্ট রিজেক্ট করে (Unauthorized)।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🛡️ Deduplication Key Lock (Gate 1)</span></td>
+                  <td class="btn-action-text">একই ওয়েবহুক ইভেন্ট ইন্টারনেটের কারণে একাধিকবার (Replay) সার্ভারে পৌঁছালে ডুপ্লিকেট অর্ডার তৈরি না করে লক করে দেয়।</td>
+                  <td class="btn-problem-text">কাস্টমার ১টি অর্ডার করেছে কিন্তু সিস্টেমে ২টি অর্ডার ঢুকে দুইবার পার্সেল চলে যাওয়ার মারাত্মক অপচয় শতভাগ বন্ধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📅 Reconcile Orders (Gate 3)</span></td>
+                  <td class="btn-action-text">ওয়েবহুক মিসিং হলে ৩ থেকে ৩০ দিনের উকমার্স অর্ডার স্ক্যান করে মিস হওয়া অর্ডারগুলো রিকনসিল করে ইনজেস্ট করে।</td>
+                  <td class="btn-problem-text">সার্ভার ডাউন বা ইন্টারনেটের বিঘ্নতার কারণে কোনো গ্রাহকের অর্ডার হারিয়ে যাওয়া বা ডেলিভারি না হওয়ার ঝুঁকি শূন্য করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📈 One-way Stock Push (Anti-Loop)</span></td>
+                  <td class="btn-action-text">দোকানে বা ফেসবুকে কোনো মাল বিক্রি হলে স্বয়ংক্রিয়ভাবে ওয়েবসাইটে লেটেস্ট স্টক আপডেট পুশ করে (ইনফিনিট লুপ সেফটি সহ)।</td>
+                  <td class="btn-problem-text">গুদামে মাল শেষ হয়ে গেলেও ওয়েবসাইটে এভেইলেবল দেখিয়ে কাস্টমারের টাকা আটকে যাওয়ার ভোগান্তি চিরতরে দূর করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔌 Disconnect Store (Preserve History)</span></td>
+                  <td class="btn-action-text">স্টোর নিষ্ক্রিয় করলেও পূর্বের সমস্ত বিক্রয়, শিপমেন্ট এবং ফাইন্যান্সিয়াল হিস্ট্রি অপরিবর্তিত ও অক্ষত রাখে।</td>
+                  <td class="btn-problem-text">ব্যবসার ঐতিহাসিক অডিট ও সেলস রিপোর্ট হারিয়ে যাওয়ার কোনো ভয় থাকে না।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. RETURNS & REVERSE LOGISTICS + PATHAO LOGISTICS ADAPTER -->
+      <section class="page-card" data-category="returns">
+        <div class="page-header">
+          <div class="page-title-group">
+            <div class="page-icon">🔄</div>
+            <div class="page-meta">
+              <h2>রিটার্ন ও এক্সচেঞ্জ ম্যানেজমেন্ট এবং পাঠাও লজিস্টিকস (Returns, RTO & Pathao Logistics)</h2>
+              <span class="page-route">/returns</span>
+              <span class="milestone-badge badge-m7">Milestone M7</span>
+            </div>
+          </div>
+          <a href="http://localhost:3000/returns" target="_blank" class="live-link-btn">
+            পেজটি খুলুন (Open Returns Dashboard) →
+          </a>
+        </div>
+
+        <div class="page-body">
+          <div class="problem-banner">
+            <div class="problem-icon">⚠️</div>
+            <div class="problem-content">
+              <h4>ই-কমার্স ব্যবসার যে প্রধান সমস্যা সমাধান করে:</h4>
+              <p>
+                বাংলাদেশে কুরিয়ারে মাল ফেরত (RTO) আসলে কুরিয়ারম্যানের হাতে নষ্ট হওয়া বা পার্টস হারানো মাল অন্ধভাবে স্টকে ঢুকিয়ে অন্য কাস্টমারকে পাঠিয়ে ব্যবসা ডোবানো বন্ধ করে; নষ্ট পণ্য আলাদা বাতিল (Damage Write-off - Gate 1) করে এবং এক্সচেঞ্জের সময় ব্যালেন্সড ইনভেন্টরি মুভমেন্ট (Gate 2) বজায় রেখে নিখুঁত হিসাব নিশ্চিত করে; কাস্টমার ডেলিভারি চার্জ রিফান্ড হলো কি না এবং রিটার্ন শিপিং খরচের পুঙ্খানুপুঙ্খ হিসাব রেখে ফিন্যান্সের ডাবল কাউন্টিং আটকায়; এবং পাঠাও মার্চেন্ট API v2 দিয়ে ওয়ান-ক্লিক পার্সেল বুকিং নিশ্চিত করে।
+              </p>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 20%;">বাটন / কন্ট্রোল</th>
+                  <th style="width: 35%;">বাটনে চাপলে কী হয় (Action)</th>
+                  <th style="width: 45%;">বাস্তব সমস্যার কী সমাধান দেয় (Problem Solved)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="btn-name-badge">🔄 Initiate Return (নতুন রিটার্ন আবেদন)</span></td>
+                  <td class="btn-action-text">যেকোনো ডেলিভার্ড বা শিপড অর্ডারের জন্য কাস্টমার রিটার্ন, কুরিয়ার RTO বা সাইজ/কালার এক্সচেঞ্জ রিকোয়েস্ট তৈরি করে।</td>
+                  <td class="btn-problem-text">কোন অর্ডারে কোন আইটেমটি কী কারণে ফেরত আসছে (Wrong Item, Defective, Disliked) তা সিস্টেমে নিখুঁতভাবে লক করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📥 Mark as Received at Hub</span></td>
+                  <td class="btn-action-text">কুরিয়ার ম্যানের কাছ থেকে ফেরত আসা পার্সেলটি ওয়্যারহাউস বা হাবে পৌঁছালে স্ট্যাটাস 'RECEIVED' এ আপডেট করে।</td>
+                  <td class="btn-problem-text">মাল আসলে হাবে পৌঁছেছে নাকি কুরিয়ার ম্যানের ব্যাগে আটকে আছে—এই বিভ্রান্তি চিরতরে বন্ধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔍 Inspect Return Item</span></td>
+                  <td class="btn-action-text">ওয়্যারহাউস কিপার প্রতিটি পার্সেল খুলে পণ্যের কন্ডিশন (Intact, Damaged, Missing Parts) এবং ডিসপজিশন নির্ধারণ করে।</td>
+                  <td class="btn-problem-text">কুরিয়ার থেকে আসা পার্সেল না দেখে অন্ধভাবে ভালো স্টকে যোগ করার মারাত্মক ভুল বন্ধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🛑 Damage Write-Off Rule (Gate 1)</span></td>
+                  <td class="btn-action-text">পণ্য নষ্ট বা ক্ষতিগ্রস্ত (Damaged) হলে সিস্টেম কখনই তা সেলেবল স্টকে রিস্টক হতে দেয় না; স্বয়ংক্রিয়ভাবে রাইট-অফ করে।</td>
+                  <td class="btn-problem-text">নষ্ট মাল আবার বিক্রি হয়ে অন্য কাস্টমারের কাছে যাওয়া এবং কাস্টমার অসন্তোষ ও ব্র্যান্ডের সুনাম নষ্ট হওয়া শতভাগ প্রতিরোধ করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🔁 Balanced Exchange Inventory (Gate 2)</span></td>
+                  <td class="btn-action-text">এক্সচেঞ্জ রিকোয়েস্টে নতুন ভ্যারিয়েন্টের স্টক স্বয়ংক্রিয়ভাবে ওয়্যারহাউস থেকে মাইনাস করে এবং ভালো মাল থাকলে তা স্টকে যোগ করে।</td>
+                  <td class="btn-problem-text">এক্সচেঞ্জের সময় ডাবল স্টক মাইনাস বা ভুল হিসাব হয়ে গুদামে মালের অমিল হওয়া দূর করে।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">💰 Complete Return & Refund Payout</span></td>
+                  <td class="btn-action-text">রিফান্ড অ্যামাউন্ট, রিটার্ন শিপিং খরচ এবং ডেলিভারি চার্জ রিফান্ড হয়েছে কিনা তা নির্ধারণ করে রিটার্ন কেস সম্পন্ন করে।</td>
+                  <td class="btn-problem-text">কাস্টমারকে অতিরিক্ত রিফান্ড দেওয়া কিংবা কোম্পানির রিটার্ন শিপিং খরচের হিসাব মিস হয়ে ফিন্যান্সে লস হওয়া আটকায়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">🚚 Pathao Merchant API v2 (Gate 3)</span></td>
+                  <td class="btn-action-text">OAuth2 টোকেন এক্সচেঞ্জ, অটো-রিফ্রেশ ও সিকিউর কনসাইনমেন্ট আইডি জেনারেট করে পাঠাও কুরিয়ারে ১ ক্লিকে অর্ডার পাঠায়।</td>
+                  <td class="btn-problem-text">পাঠাও মার্চেন্ট প্যানেলে গিয়ে প্রতিটা পার্সেল হাতে হাতে টাইপ করার সময় নষ্ট ও ভুলের অবসান ঘটায়।</td>
+                </tr>
+                <tr>
+                  <td><span class="btn-name-badge">📊 Return Rate Analytics (SKU / Courier / District)</span></td>
+                  <td class="btn-action-text">কোন প্রোডাক্ট SKU, কোন কুরিয়ার পার্টনার (Pathao বনাম Steadfast) এবং কোন জেলায় রিটার্ন রেট বেশি তার স্বয়ংক্রিয় চার্ট ও মেট্রিক্স দেখায়।</td>
+                  <td class="btn-problem-text">অতিরিক্ত রিটার্ন হওয়া ডিফেক্টিভ প্রোডাক্ট বা বেশি রিটার্ন দেওয়া প্রতারক জেলা/কুরিয়ার আগেই শনাক্ত করে ব্যবসার মুনাফা রক্ষা করে।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>Growthomic Business OS — Multi-Tenant Architecture · Managed on Supabase PostgreSQL (quciaoulprvllskaqdfd)</p>
+      <p style="margin-top: 6px; font-size: 12px; color: var(--text-muted);">
+        Notice: এই ফাইলটি একটি লিভিং গাইড (Living Manual)। নতুন ফিচার ও মাইলস্টোন তৈরি হলে স্বয়ংক্রিয়ভাবে এই ডিরেক্টরি আপডেট করা হবে।
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    function filterFeatures() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.page-card');
+
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        if (text.includes(input)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function setFilter(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.page-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

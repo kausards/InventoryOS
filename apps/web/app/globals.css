@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Shopeers Clean Canvas & Crisp White Cards */
+    --background: 216 28% 96.5%; /* #F4F6F9 */
+    --foreground: 222.2 84% 4.9%;  /* #0F172A */
+
+    --card: 0 0% 100%;             /* #FFFFFF */
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Shopeers Electric Royal Blue */
+    --primary: 221.2 83.2% 53.3%;  /* #2563EB */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 214 32% 91%;      /* #E2E8F0 */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%; /* #64748B */
+
+    --accent: 217 91% 95%;         /* #EFF6FF */
+    --accent-foreground: 221.2 83.2% 53.3%;
+
+    --destructive: 346.8 77.2% 49.8%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;   /* #E2E8F0 */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.75rem; /* 12px default radius for modern sleek cards */
+  }
+
+  .dark {
+    /* Shopeers Midnight Deep Navy & Dark Slate Cards */
+    --background: 222 35% 6.5%;    /* #0B0F17 */
+    --foreground: 210 40% 98%;     /* #F8FAFC */
+
+    --card: 222 35% 11%;           /* #121826 */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 35% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Shopeers Vivid Accent in Dark */
+    --primary: 217.2 91.2% 59.8%;  /* #3B82F6 */
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217 33% 17.5%;    /* #1E293B */
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217 33% 20%;
+    --accent-foreground: 217.2 91.2% 59.8%;
+
+    --destructive: 346.8 77.2% 49.8%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17.5%;       /* #1E293B */
+    --input: 217 33% 17.5%;
+    --ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-blue-500 selection:text-white;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@growthomic/worker",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsc-watch --onSuccess \"node dist/main.js\"",
+    "build": "tsc",
+    "start": "node dist/main",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "pg-boss": "^10.0.0",
+    "zod": "^3.23.8",
+    "dotenv": "^16.4.5",
+    "@growthomic/shared": "workspace:*",
+    "@growthomic/db": "workspace:*",
+    "drizzle-orm": "^0.45.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsc-watch": "^6.2.0",
+    "vitest": "^2.1.2"
+  }
+}
