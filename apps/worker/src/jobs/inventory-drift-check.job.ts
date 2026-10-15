@@ -1,4 +1,4 @@
-import { Job } from 'pg-boss';
+import type { Job } from 'pg-boss';
 import { withSystem, warehouseStockBalances, inventoryMovements, auditLogs } from '@growthomic/db';
 import { eq, and, sql } from 'drizzle-orm';
 

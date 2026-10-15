@@ -18,7 +18,7 @@ export const TERMINAL_SHIPMENT_STATUSES: readonly NormalizedShipmentStatus[] = [
   'returned',
 ] as const;
 
-export function isTerminalShipmentStatus(status: NormalizedShipmentStatus | string): boolean {
+export function isTerminalShipmentStatus(status: string): boolean {
   return TERMINAL_SHIPMENT_STATUSES.includes(status as NormalizedShipmentStatus);
 }
 

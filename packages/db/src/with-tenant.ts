@@ -1,9 +1,9 @@
 import { sql } from 'drizzle-orm';
 import { db } from './client';
-import * as schema from './schema';
-import { PgTransaction } from 'drizzle-orm/pg-core';
-import { PostgresJsQueryResultHKT } from 'drizzle-orm/postgres-js';
-import { ExtractTablesWithRelations } from 'drizzle-orm';
+import type * as schema from './schema';
+import type { PgTransaction } from 'drizzle-orm/pg-core';
+import type { PostgresJsQueryResultHKT } from 'drizzle-orm/postgres-js';
+import type { ExtractTablesWithRelations } from 'drizzle-orm';
 
 export type DrizzleTransaction = PgTransaction<PostgresJsQueryResultHKT, typeof schema, ExtractTablesWithRelations<typeof schema>>;
 

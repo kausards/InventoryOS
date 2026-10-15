@@ -1,5 +1,4 @@
 import { Controller, Get, Req } from '@nestjs/common';
-import { env } from '../config/env';
 
 @Controller('health')
 export class HealthController {

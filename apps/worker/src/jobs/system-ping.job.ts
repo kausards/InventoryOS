@@ -1,6 +1,6 @@
-import { Job } from 'pg-boss';
+import type { Job } from 'pg-boss';
 
-export async function handleSystemPing(job: Job<any>) {
+export async function handleSystemPing(job: Job<unknown>) {
   const { id, data } = job;
   console.log(`[system.ping] Job ${id} received:`, data);
   

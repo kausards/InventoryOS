@@ -110,10 +110,11 @@ export const updatePreferencesSchema = z.object({
 export type UpdatePreferencesInput = z.infer<typeof updatePreferencesSchema>;
 
 // Template variable interpolation helper
-export function renderTemplate(template: string, variables: Record<string, any>): string {
+export function renderTemplate(template: string, variables: Record<string, unknown>): string {
   if (!template) return '';
   return template.replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_, key) => {
-    return variables[key] !== undefined && variables[key] !== null ? String(variables[key]) : `{{${key}}}`;
+    const val = variables[key];
+    return val !== undefined && val !== null ? String(val) : `{{${key}}}`;
   });
 }
 

@@ -1,5 +1,3 @@
-import * as ipaddr from 'net';
-
 export interface SsrfValidationResult {
   isValid: boolean;
   sanitizedUrl?: string;

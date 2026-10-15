@@ -117,7 +117,7 @@ export class WooCommerceClient {
       return (await response.json()) as T;
     } catch (err: unknown) {
       if (err instanceof Error && err.name === 'AbortError') {
-        throw new Error(`WooCommerce connection timed out after ${this.timeoutMs}ms`);
+        throw new Error(`WooCommerce connection timed out after ${this.timeoutMs}ms`, { cause: err });
       }
       throw err;
     } finally {

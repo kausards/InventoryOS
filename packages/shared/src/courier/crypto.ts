@@ -62,7 +62,7 @@ export function decryptCourierCredentials(ciphertextPayload: string, secretKey?:
  * Gate 4: Mask credentials so secrets are NEVER returned in any API response or log.
  * Replaces values with '******'.
  */
-export function maskCourierCredentials<T extends Record<string, any>>(credentials: T): Record<string, string> {
+export function maskCourierCredentials<T extends Record<string, unknown>>(credentials: T): Record<string, string> {
   const masked: Record<string, string> = {};
   for (const key of Object.keys(credentials)) {
     masked[key] = '******';

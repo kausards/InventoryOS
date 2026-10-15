@@ -14,13 +14,12 @@ import {
   normalizeBdPhone,
   evaluateCustomerRisk,
   DEFAULT_RISK_RULES,
-  UpdateRiskRulesInput,
-  CreateBlacklistEntryInput,
-  UpdateBlacklistEntryInput,
-  ManualRiskReviewInput,
-  CheckRiskInput,
-  RiskEvaluationResult,
-  CourierFraudCheckResult,
+  type UpdateRiskRulesInput,
+  type CreateBlacklistEntryInput,
+  type ManualRiskReviewInput,
+  type CheckRiskInput,
+  type RiskEvaluationResult,
+  type CourierFraudCheckResult,
 } from '@growthomic/shared';
 import { CouriersService } from '../couriers/couriers.service';
 

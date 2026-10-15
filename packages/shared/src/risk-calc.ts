@@ -1,4 +1,4 @@
-import { RiskLevel } from './schemas/risk';
+import type { RiskLevel } from './schemas/risk';
 
 export interface CustomerOrderHistorySummary {
   totalOrders: number;

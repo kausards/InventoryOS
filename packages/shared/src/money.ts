@@ -35,9 +35,6 @@ export function applyPercentageDiscount(
   
   // amount * percent / 100
   // To round, we do normal multiplication and divide, observing remainder.
-  const rawDiscount = amount * BigInt(Math.round(percent * 100)); // scaling percent to integer
-  // Wait, if percent is 15.5, percent*100 = 1550.
-  // rawDiscount = amount * 1550 / 10000
   const dividend = amount * BigInt(Math.round(percent * 10000)); 
   const divisor = BigInt(1000000);
   

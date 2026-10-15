@@ -1,4 +1,4 @@
-import { Job } from 'pg-boss';
+import type { Job } from 'pg-boss';
 import { withTenant } from '@growthomic/db';
 
 export function withTenantGuard<T>(
@@ -12,7 +12,7 @@ export function withTenantGuard<T>(
     }
 
     // Process job within a tenant-scoped transaction
-    return withTenant(data.tenantId, { type: 'worker' }, async (tx) => {
+    return withTenant(data.tenantId, { type: 'worker' }, async (_tx) => {
       // We pass the transaction object to the handler if needed, 
       // but typically we can just let it run. 
       // Note: In a real implementation, the handler would need to use `tx` 

@@ -21,7 +21,7 @@ export async function seedSystemRoles() {
   try {
     await db.insert(roles).values(values);
     console.log('Seeded system roles.');
-  } catch (e) {
+  } catch {
     console.log('Roles might already be seeded.');
   }
 }
