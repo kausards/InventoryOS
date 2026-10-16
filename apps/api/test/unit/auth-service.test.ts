@@ -78,6 +78,25 @@ describe('AuthService - Tenant Onboarding & Context Resolution', () => {
       values: vi.fn().mockResolvedValue({}),
     });
 
+    // 7. Starter plan check
+    mockTx.select.mockReturnValueOnce({
+      from: vi.fn().mockReturnThis(),
+      where: vi.fn().mockReturnThis(),
+      limit: vi.fn().mockResolvedValue([{ id: 'plan-starter', slug: 'starter' }]),
+    });
+
+    // 8. Insert trial subscription
+    mockTx.insert.mockReturnValueOnce({
+      values: vi.fn().mockReturnValue({
+        returning: vi.fn().mockResolvedValue([{ id: 'sub-trial-1' }]),
+      }),
+    });
+
+    // 9. Insert initial usage
+    mockTx.insert.mockReturnValueOnce({
+      values: vi.fn().mockResolvedValue({}),
+    });
+
     const result = await service.signup({
       userId: 'u-1',
       email: 'owner@gadgetexpress.com',
@@ -88,7 +107,7 @@ describe('AuthService - Tenant Onboarding & Context Resolution', () => {
     expect(result.tenant.id).toBe('t-new-1');
     expect(result.tenant.slug).toBe('gadget-express-bd');
     expect(result.role).toBe('Owner');
-    expect(mockTx.insert).toHaveBeenCalledTimes(4); // user, tenant, membership, auditLog
+    expect(mockTx.insert).toHaveBeenCalledTimes(6); // user, tenant, membership, auditLog, subscription, usage
   });
 
   it('getMe resolves user, active tenant and active role permissions', async () => {

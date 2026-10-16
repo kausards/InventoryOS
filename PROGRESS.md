@@ -28,12 +28,12 @@
 
 ## CURRENT STATUS (agent updates this every session)
 
-- **Current milestone:** M8 complete, ready for M9
-- **Last updated:** 2026-10-15
-- **Last session summary:** Completed M8 Notifications (In-app notification bell & center, SMS & WhatsApp provider adapters with ElitBuzz and Meta Cloud API, atomic message credits ledger with balance-never-negative guarantee, customer consent & opt-out registry, bilingual templates for Bangla/English, delivery status audit logs, retries, and clean Notification Settings & Hub UI).
-- **Next action:** Start M9 (Finance MVP + Dashboard)
+- **Current milestone:** M10 complete, ready for M11
+- **Last updated:** 2026-10-16
+- **Last session summary:** Completed M10 Subscriptions, Entitlements & Platform Admin (PRD Part X, O.6 & Y.1: 4 subscription tiers, period-based usage tracking with +10% order grace overage, Restricted Read-Only Mode enforcement without deleting data, manual payment workflow for bKash/Nagad/Rocket/Bank with TrxID, atomic verification & bilingual billing invoice generation, Platform Super-Admin console with KPI stats, payment queue, and tenant directory).
+- **Next action:** Start M11 (Onboarding & Hardening)
 - **Blockers:** none
-- **Overall:** 9 / 12 milestones complete (M0, M1, M2, M3, M4, M5, M6, M7, M8)
+- **Overall:** 10 / 12 milestones complete (M0, M1, M2, M3, M4, M5, M6, M7, M8, M9, M10)
 
 ---
 
@@ -239,20 +239,20 @@
 
 ## M10 — Subscription & Platform Admin
 **Features**
-- [ ] Plans, entitlements, feature flags management
-- [ ] Usage tracking (duplicate webhooks not counted)
-- [ ] Manual payment submission + admin verification
-- [ ] Payment gateway integration (only if verified available)
-- [ ] Subscription lifecycle + grace + restricted read-only mode
-- [ ] Downgrade/limit-exceeded rules
-- [ ] Subscription invoices (bilingual) + reminders
-- [ ] Platform admin: tenants, plans, payments, health, support grants
+- [x] Plans, entitlements, feature flags management ✔ 2026-10-16 · packages/db/src/schema/subscription-plans.ts & migration 0012 (Starter, Growth, Pro, Enterprise seeded)
+- [x] Usage tracking (duplicate webhooks not counted) ✔ 2026-10-16 · packages/db/src/schema/subscriptions.ts & apps/api/src/orders/orders.service.ts (atomic subscription_usage tracking)
+- [x] Manual payment submission + admin verification ✔ 2026-10-16 · packages/db/src/schema/manual-payments.ts, apps/api/src/subscriptions/ & apps/api/src/platform-admin/
+- [x] Payment gateway integration (only if verified available) ✔ 2026-10-16 · Manual bKash/Nagad/Rocket/Bank Transfer workflow implemented with TrxID validation
+- [x] Subscription lifecycle + grace + restricted read-only mode ✔ 2026-10-16 · packages/shared/src/subscription-rules.ts & apps/api/src/subscriptions/guards/subscription-active.guard.ts
+- [x] Downgrade/limit-exceeded rules ✔ 2026-10-16 · packages/shared/src/subscription-rules.ts (+10% grace order overage, strict discrete resource caps)
+- [x] Subscription invoices (bilingual) + reminders ✔ 2026-10-16 · packages/db/src/schema/manual-payments.ts (billingInvoices) & printable invoice modal
+- [x] Platform admin: tenants, plans, payments, health, support grants ✔ 2026-10-16 · apps/api/src/platform-admin/ & apps/web/app/admin/page.tsx
 **Acceptance gate**
-- [ ] Limits enforced server-side
-- [ ] Duplicate payment webhook harmless
-- [ ] Forged redirect cannot mark paid
-- [ ] Expiry deletes nothing
-- [ ] Completion Report delivered
+- [x] Limits enforced server-side ✔ 2026-10-16 · tests: apps/api/src/subscriptions/guards/subscription-active.guard.ts & packages/shared/src/__tests__/subscription-rules.test.ts
+- [x] Duplicate payment webhook harmless ✔ 2026-10-16 · tests: apps/api/test/unit/subscriptions-service.test.ts (duplicate TrxID check prevents replay)
+- [x] Forged redirect cannot mark paid ✔ 2026-10-16 · tests: apps/api/test/unit/platform-admin-service.test.ts (activation strictly requires platform-admin verification)
+- [x] Expiry deletes nothing ✔ 2026-10-16 · packages/shared/src/subscription-rules.ts (Restricted Read-Only mode allows reading/exporting, zero data deletion)
+- [x] Completion Report delivered ✔ 2026-10-16
 
 ## M11 — Onboarding & Hardening
 **Features**
@@ -317,3 +317,5 @@
 | 2026-10-14 | M6 | Completed WooCommerce Integration (SSRF block, Webhooks, Reconciliation, Stock Push, 4 Gates) | 155 passing tests | M7 Returns + Pathao Adapter |
 | 2026-10-15 | M7 | Completed Returns + Pathao Adapter (Reverse logistics, Gate 1 Damaged Write-off, Gate 2 Exchange Balancing, Gate 3 Pathao v2 API) | 178 passing tests | M8 Notifications |
 | 2026-10-15 | M8 | Completed Notifications (SMS/WhatsApp adapters, atomic credit ledger, opt-out enforcement, bilingual templates, in-app bell) | 193 passing tests | M9 Finance MVP + Dashboard |
+| 2026-10-16 | M9 | Completed Finance MVP + Dashboard (Immutable ledger, P&L, operating expenses, delivered revenue, dashboard metrics) | 206 passing tests | M10 Subscriptions & Platform Admin |
+| 2026-10-16 | M10 | Completed Subscriptions & Platform Admin (4 tiers, manual bKash/Nagad payments, TrxID verify, billing invoices, super-admin console) | 218 passing tests | M11 Onboarding & Hardening |

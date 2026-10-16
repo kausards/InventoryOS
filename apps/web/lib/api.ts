@@ -88,4 +88,22 @@ export const api = {
   },
   delete: <T = any>(path: string, options?: RequestInit) =>
     apiFetch<T>(path, { ...options, method: 'DELETE' }),
+
+  // M10 Subscriptions & Billing
+  subscriptions: {
+    getPlans: () => api.get<any[]>('/subscriptions/plans'),
+    getCurrent: () => api.get<any>('/subscriptions/current'),
+    submitManualPayment: (body: any) => api.post<any>('/subscriptions/manual-payment', body),
+    getManualPayments: () => api.get<any[]>('/subscriptions/manual-payments'),
+    getInvoices: () => api.get<any[]>('/subscriptions/invoices'),
+  },
+
+  // M10 Platform Super-Admin
+  admin: {
+    getPendingPayments: () => api.get<any[]>('/admin/payments/pending'),
+    verifyPayment: (id: string, body: { decision: 'verified' | 'rejected'; rejectionReason?: string | undefined }) =>
+      api.post<any>(`/admin/payments/${id}/verify`, body),
+    getTenants: () => api.get<any[]>('/admin/tenants'),
+    getStats: () => api.get<any>('/admin/stats'),
+  },
 };

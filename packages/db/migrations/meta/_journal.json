@@ -71,6 +71,13 @@
       "when": 1710000000011,
       "tag": "0011_finance_and_expenses",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1710000000012,
+      "tag": "0012_subscriptions_and_platform_admin",
+      "breakpoints": true
     }
   ]
 }

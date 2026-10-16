@@ -7,6 +7,61 @@ Versions follow milestone numbers until a public API is established.
 
 ---
 
+## [M10] — 2026-10-16 — Subscriptions, Entitlements & Platform Admin
+
+### Added
+- **Database Schema & DDL Migration (`packages/db/migrations/0012_subscriptions_and_platform_admin.sql`):**
+  - Tables: `subscription_plans`, `subscriptions`, `subscription_usage`, `manual_payment_submissions`, `billing_invoices`.
+  - Default subscription tiers seeded: `starter` (৳৯৯৯/mo), `growth` (৳২,৪৯৯/mo), `pro` (৳৪,৯৯৯/mo), `enterprise` (৳৯,৯৯৯/mo).
+  - Period-based resource usage tracking (`subscription_usage`: `orders_count`).
+  - Row Level Security (`FORCE ROW LEVEL SECURITY`) with `growthomic_app` and `growthomic_platform_admin` role isolation.
+  - Registered migration index 10 in `packages/db/migrations/meta/_journal.json`.
+- **Shared Schemas & Entitlement Logic (`packages/shared`):**
+  - `packages/shared/src/schemas/subscriptions.ts`: Zod schemas for `createPlanSchema`, `manualPaymentSubmissionSchema`, `verifyPaymentSchema`, `changePlanSchema`, and `planEntitlementsSchema`.
+  - `packages/shared/src/subscription-rules.ts`:
+    - `canTransitionSubscription`: Validates subscription lifecycle states (`trial`, `active`, `payment_pending`, `past_due`, `grace_period`, `cancelled`, `expired`, `suspended`).
+    - `isRestrictedReadOnlyMode`: Enforces Restricted Read-Only Mode (PRD X.4) allowing viewing/exporting while blocking write operations without deleting data.
+    - `checkResourceLimit`: Configurable +10% grace overage for monthly orders (PRD X.5) and hard caps for discrete resources (staff, stores, warehouses).
+- **Backend API Modules (`apps/api`):**
+  - `SubscriptionsService` & `SubscriptionsController`:
+    - Available plans listing with serialized minor units.
+    - Auto-healing trial subscription creation upon tenant onboarding or lookup.
+    - Manual payment submission for Bangladeshi payment methods (bKash, Nagad, Rocket, Bank Transfer) with duplicate TrxID replay prevention.
+    - Atomic order usage incrementation in `OrdersService.createOrder`.
+    - Tenant invoices listing.
+  - `SubscriptionActiveGuard`:
+    - Intercepts mutating requests (`POST`, `PUT`, `PATCH`, `DELETE`).
+    - Enforces Restricted Read-Only Mode when a tenant's subscription is expired or cancelled.
+    - Hard blocks new order creation when monthly order quota + 10% grace limit is exceeded.
+  - `PlatformAdminService` & `PlatformAdminController`:
+    - Pending payment submissions queue.
+    - Atomic payment verification (`POST /admin/payments/:id/verify`): activates subscription, extends period, generates official bilingual `billing_invoices` record, resets period usage, and writes audit log.
+    - Payment rejection with mandatory justification recorded.
+    - Platform-wide KPI metrics and tenant directory.
+  - `PlatformAdminGuard`: Restricts super-admin endpoints to operators.
+- **Frontend Shopeers UI (`apps/web`):**
+  - `/settings/billing`:
+    - Current Plan Status card with lifecycle badge, pricing in BDT (৳), and billing cycle.
+    - Resource usage gauges for monthly orders with interactive progress bar and grace overage alert.
+    - Upgrade Plan comparison modal with 4 tiers and monthly/annual billing cycle toggle (20% discount).
+    - Manual Payment submission modal with Bangladeshi payment instructions for bKash, Nagad, Rocket, and Bank Transfer.
+    - Payment submissions history table and printable bilingual billing invoices.
+    - Prominent Restricted Read-Only Mode and trial alerts.
+  - `/admin`:
+    - Super-Admin dashboard with platform KPI stats (Total Tenants, Active Subscriptions, Pending Verifications, Platform Revenue).
+    - Pending payment verification queue with one-click Approve / Reject action modals.
+    - Searchable tenant directory table.
+  - `Sidebar`: Added Billing & Plans and Platform Admin navigation links, and connected the Upgrade premium card button.
+
+### Acceptance Gates & Tests
+- 218 passing tests across monorepo (`packages/shared`: 105, `apps/api`: 113).
+- **Gate 1: Server-Side Limit Enforcement** — Enforced in `SubscriptionActiveGuard` and `subscription-rules.test.ts`.
+- **Gate 2: Replay & Webhook Idempotency** — Verified duplicate TrxID rejection in `subscriptions-service.test.ts`.
+- **Gate 3: Forged Redirect Protection** — Verified activation strictly requires platform admin review in `platform-admin-service.test.ts`.
+- **Gate 4: Data Preservation on Expiry** — Verified zero deletion, read-only mode in `subscription-rules.ts`.
+
+---
+
 ## [M9] — 2026-10-16 — Finance MVP + Dashboard
 
 ### Added

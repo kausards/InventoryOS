@@ -16,6 +16,8 @@ import {
   productVariants,
   products,
   auditLogs,
+  subscriptions,
+  subscriptionUsage,
 } from '@growthomic/db';
 import { eq, and, sql, or, ilike, desc } from 'drizzle-orm';
 import {
@@ -568,6 +570,28 @@ export class OrdersService {
           updatedAt: sql`now()`,
         })
         .where(eq(customers.id, customerId));
+
+      // 9b. Increment Subscription Usage orders count
+      const activeTenantSub = await tx
+        .select({ id: subscriptions.id })
+        .from(subscriptions)
+        .where(eq(subscriptions.tenantId, tenantId))
+        .limit(1);
+
+      if (activeTenantSub[0]) {
+        await tx
+          .update(subscriptionUsage)
+          .set({
+            ordersCount: sql`${subscriptionUsage.ordersCount} + 1`,
+            updatedAt: sql`now()`,
+          })
+          .where(
+            and(
+              eq(subscriptionUsage.tenantId, tenantId),
+              eq(subscriptionUsage.subscriptionId, activeTenantSub[0].id)
+            )
+          );
+      }
 
       // 10. Audit Log
       await tx.insert(auditLogs).values({

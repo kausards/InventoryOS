@@ -1,7 +1,18 @@
 import { Injectable, UnauthorizedException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { eq, and, sql } from 'drizzle-orm';
-import { withSystem, users, tenants, roles, tenantMemberships, rolePermissions, auditLogs } from '@growthomic/db';
+import {
+  withSystem,
+  users,
+  tenants,
+  roles,
+  tenantMemberships,
+  rolePermissions,
+  auditLogs,
+  subscriptionPlans,
+  subscriptions,
+  subscriptionUsage,
+} from '@growthomic/db';
 import { type SignupInput, PERMISSIONS } from '@growthomic/shared';
 import { env } from '../config/env';
 
@@ -108,6 +119,40 @@ export class AuthService {
         after: { name: newTenant.name, slug: newTenant.slug },
         requestId: requestId ?? null,
       });
+
+      // 7. Auto-initialize 14-day trial subscription
+      const starterPlan = await tx
+        .select()
+        .from(subscriptionPlans)
+        .where(eq(subscriptionPlans.slug, 'starter'))
+        .limit(1);
+
+      if (starterPlan[0]) {
+        const now = new Date();
+        const trialEnd = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+        const createdSub = await tx
+          .insert(subscriptions)
+          .values({
+            tenantId: newTenant.id,
+            planId: starterPlan[0].id,
+            status: 'trial',
+            billingCycle: 'monthly',
+            currentPeriodStart: now.toISOString(),
+            currentPeriodEnd: trialEnd.toISOString(),
+            trialEndsAt: trialEnd.toISOString(),
+          })
+          .returning();
+
+        if (createdSub[0]) {
+          await tx.insert(subscriptionUsage).values({
+            tenantId: newTenant.id,
+            subscriptionId: createdSub[0].id,
+            periodStart: now.toISOString(),
+            periodEnd: trialEnd.toISOString(),
+            ordersCount: 0,
+          });
+        }
+      }
 
       return {
         tenant: newTenant,

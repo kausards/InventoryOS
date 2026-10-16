@@ -59,3 +59,9 @@ export * from './notifications';
 // M9 — Finance MVP + Dashboard
 export * from './financial-transactions';
 export * from './expenses';
+
+// M10 — Subscriptions, Entitlements & Platform Admin
+export * from './subscription-plans';
+export * from './subscriptions';
+export * from './manual-payments';
+

@@ -24,6 +24,8 @@ import {
   Globe,
   RotateCcw,
   Bell,
+  CreditCard,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -295,6 +297,28 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <span>Team & Roles</span>
             </Link>
             <Link
+              href="/settings/billing"
+              className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                isRouteActive('/settings/billing')
+                  ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <CreditCard className={`w-4 h-4 ${isRouteActive('/settings/billing') ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`} />
+              <span>Billing & Plans</span>
+            </Link>
+            <Link
+              href="/admin"
+              className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                isRouteActive('/admin')
+                  ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <ShieldCheck className={`w-4 h-4 ${isRouteActive('/admin') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
+              <span>Platform Admin</span>
+            </Link>
+            <Link
               href="/help"
               className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white transition-all"
             >
@@ -317,13 +341,13 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
           <p className="text-[11px] text-blue-100/80 mb-3 leading-snug">
             Upgrade your account and unlock all of the benefits.
           </p>
-          <button
-            type="button"
+          <Link
+            href="/settings/billing"
             className="w-full py-2 px-3 rounded-xl bg-white/20 hover:bg-white/30 active:bg-white/40 text-white text-[11px] font-bold backdrop-blur-sm transition-colors flex items-center justify-center gap-1.5"
           >
             <Sparkles className="w-3 h-3 text-amber-300" />
             Upgrade premium
-          </button>
+          </Link>
         </div>
       </div>
     </aside>

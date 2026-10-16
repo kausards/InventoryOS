@@ -64,5 +64,4 @@ export * from './integrations.js';
 export * from './returns.js';
 export * from './notifications.js';
 export * from './finance.js';
-
-
+export * from './subscriptions.js';

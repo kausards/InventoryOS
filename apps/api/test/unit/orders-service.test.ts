@@ -372,6 +372,13 @@ describe('OrdersService - Order State Machine, Isolation & Stock Integration', (
         }),
       });
 
+      // 10b. Subscription lookup
+      mockTx.select.mockReturnValueOnce({
+        from: vi.fn().mockReturnThis(),
+        where: vi.fn().mockReturnThis(),
+        limit: vi.fn().mockResolvedValue([]),
+      });
+
       // 11. Audit log
       mockTx.insert.mockReturnValueOnce({
         values: vi.fn().mockResolvedValue({}),
