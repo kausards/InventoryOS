@@ -7,6 +7,51 @@ Versions follow milestone numbers until a public API is established.
 
 ---
 
+## [M9] — 2026-10-16 — Finance MVP + Dashboard
+
+### Added
+- **Database Schema & DDL Migration (`packages/db/migrations/0011_finance_and_expenses.sql`):**
+  - Tables: `financial_transactions`, `expenses`.
+  - Immutable single-entry financial ledger architecture (`financial_transactions`), double-entry ready with nullable `account_id` and self-referential `reversal_of` foreign key.
+  - Operating expenses management table (`expenses`) with categories (`rent`, `marketing`, `salaries`, `utilities`, `software`, `packaging_supplies`, etc.), payment status, and automated ledger posting upon payment.
+  - Multi-tenant Row Level Security (`FORCE ROW LEVEL SECURITY`) with `growthomic_app` role permissions and isolation policies.
+  - Registered migration index 9 in `packages/db/migrations/meta/_journal.json`.
+- **Shared Financial Formulas & Validation Schemas (`packages/shared`):**
+  - PRD Part R deterministic formulas in `packages/shared/src/finance-calc.ts`:
+    - `calculateOrderFinance`: Deterministic net sales, gross profit, contribution margin after order costs.
+    - `calculateOperatingProfit`: Gross Profit − Operating Expenses.
+    - `calculateNetCashMovement`: Actual Cash Inflows − Outflows.
+    - `calculateMarginPercent`: Margin percentage with 2-decimal precision.
+  - Zod schemas: `createFinancialTransactionSchema`, `reverseFinancialTransactionSchema`, `createExpenseSchema`, `updateExpenseSchema`, `financialReportFilterSchema`.
+  - All financial amounts strictly enforced as positive `BIGINT` in minor units (paisa, where 100 paisa = ৳1.00 BDT).
+- **Backend Finance & Expenses API (`apps/api`):**
+  - `FinanceService`:
+    - Revenue recognition strictly at delivery (`delivered` order status) with historical COGS snapshotting, packaging fee snapshot, and courier fee snapshot.
+    - Idempotent delivery recognition ensuring duplicate events never double-post ledger entries.
+    - Immutable ledger reversal mechanics: Creates an offsetting reversal transaction with inverted direction (`in` $\leftrightarrow$ `out`), pointing to `reversal_of`, and marks original transaction as `reversed`.
+    - `getPnLReport`: Accrual-based deterministic P&L statement (Gross Sales, Net Sales, COGS, Gross Profit, Direct Order Costs, Contribution Margin, Operating Expenses, Operating Profit, Margins, and Net Cash Movement).
+    - `getDashboardMetrics`: 30-day time-series revenue vs expenses daily trend chart data, order volume, and AOV.
+  - `ExpensesService`: Full CRUD for operating expenses with automatic transaction posting to financial ledger for paid expenses and category aggregation.
+  - `FinanceController` & `ExpensesController` with server-side RBAC protection (`FINANCE_VIEW`, `FINANCE_MANAGE`, `EXPENSES_VIEW`, `EXPENSES_CREATE`).
+  - Integrated `OrdersService` automatic revenue recognition upon order status reaching `delivered`.
+- **Frontend Shopeers UI (`apps/web`):**
+  - `/finances`: Complete Profit & Loss (P&L) statement page with quick date range filters (Today, 7D, 30D, 90D, All), top KPI cards, and waterfall statement breakdown conforming to PRD R.3.
+  - `/finances/ledger`: Immutable single-entry financial transactions ledger with type, category, and direction filters, search, and interactive Reversal Modal.
+  - `/finances/expenses`: Operating Expenses hub with category spend metrics, breakdown percentages, filterable table, and Add/Edit Expense modal.
+  - `/dashboard`: Enhanced executive dashboard with live BDT (৳) financial KPIs, delivered order metrics, 30-day operating profit, and direct navigation links to finance reports.
+  - `Sidebar`: Updated Finances navigation submenu linking to P&L Statement, Transaction Ledger, Operating Expenses, and COD Settlements.
+- **Documentation (`docs/`):**
+  - `docs/finance-policy.md`: Complete accounting treatment for revenue recognition, COGS snapshotting, order costs, operating expenses, ledger immutability, reversal mechanics, and PRD R.3 worked example.
+  - `docs/kpi-definitions.md`: Exact mathematical definitions and timing for Net Product Sales, COGS, Gross Profit, Contribution, Operating Profit, Net Cash Movement, and AOV.
+
+### Acceptance Gates & Tests
+- 206 passing tests across the entire monorepo (`packages/shared`: 94, `apps/api`: 107, `apps/worker`: 4, `apps/web`: 1).
+- **Gate 1: PRD R.3 Worked Example** — Verified in paisa (`finance-calc.test.ts` & `finance-service.test.ts`).
+- **Gate 2: Ledger Immutability & Reversal Workflow** — Verified reversal direction flipping, idempotency, and double-reversal rejection (`finance-service.test.ts`).
+- **Gate 3: P&L Statement Reconciliation** — Verified exact accrual calculation matching ledger records (`finance-service.test.ts`).
+
+---
+
 ## [M8] — 2026-10-15 — Notifications, Adapters, Consent & Message Credits Ledger
 
 ### Added

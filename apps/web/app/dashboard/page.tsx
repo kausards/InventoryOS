@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Sidebar } from '../../components/sidebar';
 import { Topbar } from '../../components/topbar';
 import { WidgetDrawer } from '../../components/widget-drawer';
@@ -21,11 +22,16 @@ import {
   Smartphone,
   Gamepad2,
   ExternalLink,
+  DollarSign,
+  TrendingUp,
+  Receipt,
+  ShoppingCart,
 } from 'lucide-react';
 
 export default function DashboardPage() {
   const [widgetDrawerOpen, setWidgetDrawerOpen] = useState(false);
   const [me, setMe] = useState<any>(null);
+  const [financeData, setFinanceData] = useState<any>(null);
   const [hoveredDate, setHoveredDate] = useState<string | null>('Jan 18, 2025');
   const [aiPrompt, setAiPrompt] = useState('');
   const [aiResponse, setAiResponse] = useState<string | null>(null);
@@ -45,6 +51,11 @@ export default function DashboardPage() {
           ],
         });
       });
+
+    // Load live finance KPIs
+    api.get('/finance/dashboard?range=30d')
+      .then((data) => setFinanceData(data))
+      .catch((err) => console.log('Finance dashboard load fallback', err));
   }, []);
 
   const handleAiAsk = (e: React.FormEvent) => {
@@ -54,42 +65,48 @@ export default function DashboardPage() {
     setAiPrompt('');
   };
 
+  const formatTaka = (minor: number | undefined) => {
+    if (minor == null) return '৳0';
+    const taka = minor / 100;
+    return `৳${taka.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  };
+
   const kpis = [
     {
-      title: 'Page Views',
-      value: '16,431',
+      title: 'Net Revenue (Delivered)',
+      value: financeData?.summary ? formatTaka(financeData.summary.netRevenueMinor) : '৳0',
       change: '+15.5%',
       isPositive: true,
-      comparedTo: 'vs. 14,553 last period',
-      icon: Eye,
-      iconBg: 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400',
+      comparedTo: 'Accrual recognized at delivery',
+      icon: DollarSign,
+      iconBg: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400',
     },
     {
-      title: 'Visitors',
-      value: '6,225',
-      change: '+8.4%',
+      title: 'Gross Profit',
+      value: financeData?.summary ? formatTaka(financeData.summary.grossProfitMinor) : '৳0',
+      change: `${financeData?.summary?.grossMarginPercent ?? 0}%`,
       isPositive: true,
-      comparedTo: 'vs. 5,732 last period',
-      icon: LayoutGrid,
+      comparedTo: 'Gross Margin (Net Sales − COGS)',
+      icon: TrendingUp,
       iconBg: 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400',
     },
     {
-      title: 'Click',
-      value: '2,832',
-      change: '-10.5%',
-      isPositive: false,
-      comparedTo: 'vs. 3,294 last period',
-      icon: MousePointer,
-      iconBg: 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400',
+      title: 'Operating Profit',
+      value: financeData?.summary ? formatTaka(financeData.summary.operatingProfitMinor) : '৳0',
+      change: `${financeData?.summary?.operatingMarginPercent ?? 0}%`,
+      isPositive: (financeData?.summary?.operatingProfitMinor ?? 0) >= 0,
+      comparedTo: 'Operating Margin (after Opex)',
+      icon: Receipt,
+      iconBg: 'bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400',
     },
     {
-      title: 'Orders',
-      value: '1,224',
-      change: '+4.4%',
+      title: 'Delivered Orders',
+      value: `${financeData?.summary?.totalDeliveredOrders ?? 0}`,
+      change: financeData?.summary?.averageOrderValueMinor ? `AOV: ${formatTaka(financeData.summary.averageOrderValueMinor)}` : 'AOV: ৳0',
       isPositive: true,
-      comparedTo: 'vs. 1,185 last period',
-      icon: Mail,
-      iconBg: 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400',
+      comparedTo: 'Delivered orders count',
+      icon: ShoppingCart,
+      iconBg: 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400',
     },
   ];
 
@@ -225,27 +242,28 @@ export default function DashboardPage() {
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                      Total Profit
+                      Operating Profit (Last 30 Days)
                     </h2>
                     <div className="flex items-baseline gap-3 mt-1">
                       <span className="text-3xl font-extrabold text-slate-900 dark:text-white font-mono tracking-tight">
-                        $446.7K
+                        {financeData?.summary ? formatTaka(financeData.summary.operatingProfitMinor) : '৳0'}
                       </span>
                       <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400">
-                        <ArrowUpRight className="w-3 h-3" /> 24.4%
+                        <ArrowUpRight className="w-3 h-3" /> {financeData?.summary?.operatingMarginPercent ?? 0}%
                       </span>
                       <span className="text-xs text-slate-400">
-                        vs. last period
+                        Operating Margin
                       </span>
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  <Link
+                    href="/finances"
+                    className="flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
                   >
-                    <MoreHorizontal className="w-4 h-4" />
-                  </button>
+                    <span>View P&L</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
 
                 {/* SVG Area / Spline Chart */}

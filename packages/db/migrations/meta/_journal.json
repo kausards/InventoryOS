@@ -64,6 +64,13 @@
       "when": 1710000000010,
       "tag": "0010_notifications_and_credits",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1710000000011,
+      "tag": "0011_finance_and_expenses",
+      "breakpoints": true
     }
   ]
 }

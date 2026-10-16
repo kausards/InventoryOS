@@ -56,5 +56,6 @@ export * from './notification-preferences';
 export * from './customer-consents';
 export * from './notifications';
 
-
-
+// M9 — Finance MVP + Dashboard
+export * from './financial-transactions';
+export * from './expenses';

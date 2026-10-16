@@ -176,22 +176,34 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
             {financesOpen && (
               <div className="pl-9 space-y-1">
                 <Link
-                  href="/finances/invoices"
-                  className="block px-2 py-1.5 rounded-lg text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                  href="/finances"
+                  className={`block px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                    pathname === '/finances'
+                      ? 'text-blue-600 dark:text-blue-400 font-semibold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
                 >
-                  Invoices
+                  P&L Statement
                 </Link>
                 <Link
-                  href="/finances/transactions"
-                  className="block px-2 py-1.5 rounded-lg text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                  href="/finances/ledger"
+                  className={`block px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                    isRouteActive('/finances/ledger')
+                      ? 'text-blue-600 dark:text-blue-400 font-semibold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
                 >
-                  Transactions
+                  Transaction Ledger
                 </Link>
                 <Link
-                  href="/finances/reports"
-                  className="block px-2 py-1.5 rounded-lg text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                  href="/finances/expenses"
+                  className={`block px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                    isRouteActive('/finances/expenses')
+                      ? 'text-blue-600 dark:text-blue-400 font-semibold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  }`}
                 >
-                  Reports
+                  Operating Expenses
                 </Link>
                 <Link
                   href="/finances/settlements"

@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  Optional,
 } from '@nestjs/common';
 import {
   withSystem,
@@ -30,10 +31,14 @@ import type {
   BulkOrderActionInput,
 } from '@growthomic/shared';
 import { InventoryService } from '../inventory/inventory.service';
+import { FinanceService } from '../finance/finance.service';
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly inventoryService: InventoryService) {}
+  constructor(
+    private readonly inventoryService: InventoryService,
+    @Optional() private readonly financeService?: FinanceService
+  ) {}
 
   async listOrders(
     tenantId: string,
@@ -718,6 +723,11 @@ export class OrdersService {
           .where(eq(orders.id, orderId))
           .returning()
       )[0]!;
+
+      // If delivered, recognize revenue in finance ledger (PRD R.2)
+      if (targetStatus === 'delivered' && this.financeService) {
+        await this.financeService.recordOrderDeliveredRevenue(tenantId, orderId, actorId);
+      }
 
       // Record Timeline Entry
       await tx.insert(orderStatusHistory).values({

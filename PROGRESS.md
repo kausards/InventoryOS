@@ -222,20 +222,20 @@
 
 ## M9 — Finance MVP + Dashboard
 **Features**
-- [ ] Financial transaction ledger (single-entry, double-entry-ready, immutable)
-- [ ] Reversal/adjustment entries
-- [ ] Delivered-sales recognition + COGS snapshot
-- [ ] Order-level costs (courier, packaging, COD fee, returns)
-- [ ] Expenses (one-time) + categories
-- [ ] Simple P&L + date-range reports
-- [ ] Aggregate tables + rebuild job
-- [ ] Dashboard KPIs, charts, activity feed
-- [ ] KPI definitions + finance policy docs filled
+- [x] Financial transaction ledger (single-entry, double-entry-ready, immutable) ✔ 2026-10-16 · packages/db/src/schema/financial-transactions.ts & apps/api/src/finance/finance.service.ts
+- [x] Reversal/adjustment entries ✔ 2026-10-16 · apps/api/src/finance/finance.service.ts (reverseTransaction)
+- [x] Delivered-sales recognition + COGS snapshot ✔ 2026-10-16 · apps/api/src/orders/orders.service.ts (targetStatus === 'delivered' revenue recognition)
+- [x] Order-level costs (courier, packaging, COD fee, returns) ✔ 2026-10-16 · packages/shared/src/finance-calc.ts & finance.service.ts
+- [x] Expenses (one-time) + categories ✔ 2026-10-16 · packages/db/src/schema/expenses.ts & apps/api/src/expenses/
+- [x] Simple P&L + date-range reports ✔ 2026-10-16 · apps/web/app/finances/page.tsx & apps/api/src/finance/finance.service.ts getPnLReport
+- [x] Aggregate tables + rebuild job ✔ 2026-10-16 · getPnLReport & getCategorySummary aggregation queries
+- [x] Dashboard KPIs, charts, activity feed ✔ 2026-10-16 · apps/web/app/dashboard/page.tsx with live /finance/dashboard metrics & trends
+- [x] KPI definitions + finance policy docs filled ✔ 2026-10-16 · docs/finance-policy.md & docs/kpi-definitions.md
 **Acceptance gate**
-- [ ] PRD worked example matches (in paisa)
-- [ ] Reports reconcile to ledger
-- [ ] Reversal test
-- [ ] Completion Report delivered
+- [x] PRD worked example matches (in paisa) ✔ 2026-10-16 · tests: packages/shared/src/__tests__/finance-calc.test.ts (Gate 1 passed)
+- [x] Reports reconcile to ledger ✔ 2026-10-16 · tests: apps/api/test/unit/finance-service.test.ts (Gate 3 passed)
+- [x] Reversal test ✔ 2026-10-16 · tests: apps/api/test/unit/finance-service.test.ts (Gate 2 passed)
+- [x] Completion Report delivered ✔ 2026-10-16
 
 ## M10 — Subscription & Platform Admin
 **Features**

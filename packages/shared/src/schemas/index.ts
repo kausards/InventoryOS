@@ -63,5 +63,6 @@ export * from './courier.js';
 export * from './integrations.js';
 export * from './returns.js';
 export * from './notifications.js';
+export * from './finance.js';
 
 
