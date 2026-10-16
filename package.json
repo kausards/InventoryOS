@@ -5,7 +5,8 @@
   "description": "Growthomic Inventory & Business OS — multi-tenant SaaS monorepo",
   "scripts": {
     "dev": "pnpm --filter './apps/*' run dev",
-    "build": "pnpm --filter './packages/*' run build && pnpm --filter './apps/*' run build",
+    "build": "pnpm --filter @growthomic/shared run build && pnpm --filter @growthomic/db run build && pnpm --filter './apps/*' run build",
+    "build:packages": "pnpm --filter @growthomic/shared run build && pnpm --filter @growthomic/db run build",
     "lint": "pnpm -r run lint",
     "typecheck": "pnpm -r run typecheck",
     "test": "pnpm -r run test",

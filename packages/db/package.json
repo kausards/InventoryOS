@@ -14,14 +14,21 @@
     "studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@growthomic/shared": "workspace:*",
     "drizzle-orm": "^0.45.4",
     "pg": "^8.23.1"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "^0.31.11",
-    "vitest": "^2.1.2",
-    "@growthomic/shared": "workspace:*"
+    "vitest": "^2.1.2"
   }
 }
