@@ -44,13 +44,13 @@ END $$;
 
 -- 5. RLS Policies
 CREATE POLICY "import_batches_select" ON "import_batches" FOR SELECT
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "import_batches_insert" ON "import_batches" FOR INSERT
-  WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "import_batches_update" ON "import_batches" FOR UPDATE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "import_batches_delete" ON "import_batches" FOR DELETE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');

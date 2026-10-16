@@ -38,6 +38,7 @@ export async function withSystem<T>(
 ): Promise<T> {
   return db.transaction(async (tx) => {
     await tx.execute(sql`SELECT set_config('app.is_system', 'true', true)`);
+    await tx.execute(sql`SELECT set_config('app.tenant_id', '00000000-0000-0000-0000-000000000000', true)`);
     return fn(tx as unknown as DrizzleTransaction);
   });
 }

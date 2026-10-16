@@ -175,37 +175,37 @@ END $$;
 
 -- 9. RLS Policies
 CREATE POLICY "subscriptions_select" ON "subscriptions" FOR SELECT
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "subscriptions_insert" ON "subscriptions" FOR INSERT
-  WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "subscriptions_update" ON "subscriptions" FOR UPDATE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "subscription_usage_select" ON "subscription_usage" FOR SELECT
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "subscription_usage_insert" ON "subscription_usage" FOR INSERT
-  WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "subscription_usage_update" ON "subscription_usage" FOR UPDATE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "manual_payments_select" ON "manual_payment_submissions" FOR SELECT
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "manual_payments_insert" ON "manual_payment_submissions" FOR INSERT
-  WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "manual_payments_update" ON "manual_payment_submissions" FOR UPDATE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "billing_invoices_select" ON "billing_invoices" FOR SELECT
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "billing_invoices_insert" ON "billing_invoices" FOR INSERT
-  WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "billing_invoices_update" ON "billing_invoices" FOR UPDATE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');

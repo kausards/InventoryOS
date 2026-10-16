@@ -78,22 +78,22 @@ END $$;
 
 -- 5. RLS Policies
 CREATE POLICY "financial_transactions_select" ON "financial_transactions" FOR SELECT
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "financial_transactions_insert" ON "financial_transactions" FOR INSERT
-  WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "financial_transactions_update" ON "financial_transactions" FOR UPDATE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "expenses_select" ON "expenses" FOR SELECT
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "expenses_insert" ON "expenses" FOR INSERT
-  WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  WITH CHECK (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "expenses_update" ON "expenses" FOR UPDATE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');
 
 CREATE POLICY "expenses_delete" ON "expenses" FOR DELETE
-  USING (tenant_id = current_setting('app.tenant_id', true)::uuid OR current_setting('app.is_system', true) = 'true');
+  USING (tenant_id = NULLIF(current_setting('app.tenant_id', true), '')::uuid OR current_setting('app.is_system', true) = 'true');

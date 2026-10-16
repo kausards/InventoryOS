@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { eq, and, sql, desc, gte, lte } from 'drizzle-orm';
 import {
   withSystem,
+  withTenant,
   financialTransactions,
   orders,
   orderItems,
@@ -574,7 +575,12 @@ export class FinanceService {
           totalSales: sql<number>`coalesce(sum(case when order_status = 'delivered' then total_amount_minor else 0 end), 0)::bigint`,
         })
         .from(orders)
-        .where(and(eq(orders.tenantId, tenantId), gte(orders.createdAt, startDate)));
+        .where(
+          and(
+            eq(orders.tenantId, tenantId),
+            sql`${orders.createdAt} >= ${startDate}::timestamptz`
+          )
+        );
 
       const totalDelivered = orderStats[0]?.deliveredOrders || 0;
       const totalSalesMinor = Number(orderStats[0]?.totalSales || 0);

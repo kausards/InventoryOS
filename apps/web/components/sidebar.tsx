@@ -8,33 +8,27 @@ import {
   ShoppingCart,
   Package,
   Users,
-  FileText,
-  Store,
   DollarSign,
-  ChevronDown,
-  BarChart3,
-  Percent,
-  Settings,
-  HelpCircle,
-  Shield,
-  ShieldAlert,
-  Sparkles,
-  Boxes,
+  RotateCcw,
   Truck,
   Globe,
-  RotateCcw,
+  ShieldAlert,
   Bell,
+  Settings,
   CreditCard,
-  ShieldCheck,
   FileSpreadsheet,
   Compass,
+  ShieldCheck,
+  ChevronDown,
+  Sparkles,
+  Boxes,
 } from 'lucide-react';
 
 interface SidebarProps {
   activeTenantName?: string;
 }
 
-export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps) {
+export function Sidebar({ activeTenantName = 'Apex Lifestyle Ltd' }: SidebarProps) {
   const pathname = usePathname();
   const [financesOpen, setFinancesOpen] = useState(true);
 
@@ -50,8 +44,8 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
       {/* Top Header & Navigation */}
       <div className="flex flex-col flex-1 overflow-y-auto px-4 py-5 scrollbar-thin">
         {/* Brand Logo */}
-        <div className="flex items-center gap-2.5 px-2 mb-6">
-          <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold shadow-sm shadow-blue-500/20">
+        <Link href="/dashboard" className="flex items-center gap-2.5 px-2 mb-6 group">
+          <div className="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
             <span className="text-base tracking-tighter">S</span>
           </div>
           <div className="flex flex-col">
@@ -62,12 +56,16 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               {activeTenantName}
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Navigation Groups */}
-        <nav className="space-y-6">
+        <nav className="space-y-5">
           {/* Main Navigation */}
           <div className="space-y-1">
+            <div className="px-3 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+              Operations
+            </div>
+
             <Link
               href="/dashboard"
               className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -145,76 +143,66 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <Users className={`w-4 h-4 ${isRouteActive('/customers') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
               <span>Customers</span>
             </Link>
-
-            <Link
-              href="/content"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white transition-all"
-            >
-              <FileText className="w-4 h-4 text-slate-400" />
-              <span>Content</span>
-            </Link>
-
-            <Link
-              href="/store"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white transition-all"
-            >
-              <Store className="w-4 h-4 text-slate-400" />
-              <span>Online Store</span>
-            </Link>
           </div>
 
-          {/* Finances Section (Collapsible) */}
+          {/* Finances Section */}
           <div className="space-y-1">
-            <button
-              type="button"
-              onClick={() => setFinancesOpen(!financesOpen)}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+            <div className="flex items-center justify-between px-3 pb-1">
+              <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+                Finance & Accounting
+              </span>
+              <button
+                type="button"
+                onClick={() => setFinancesOpen(!financesOpen)}
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
+                title="Toggle finance menu"
+              >
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${financesOpen ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+
+            <Link
+              href="/finances"
+              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                pathname === '/finances'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              }`}
             >
               <div className="flex items-center gap-3">
-                <DollarSign className="w-4 h-4 text-slate-400" />
-                <span>Finances</span>
+                <DollarSign className={`w-4 h-4 ${pathname === '/finances' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`} />
+                <span>P&L Overview</span>
               </div>
-              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${financesOpen ? 'rotate-180' : ''}`} />
-            </button>
+            </Link>
 
             {financesOpen && (
-              <div className="pl-9 space-y-1">
-                <Link
-                  href="/finances"
-                  className={`block px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    pathname === '/finances'
-                      ? 'text-blue-600 dark:text-blue-400 font-semibold'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  P&L Statement
-                </Link>
+              <div className="pl-6 space-y-1 border-l-2 border-slate-100 dark:border-slate-800 ml-4">
                 <Link
                   href="/finances/ledger"
-                  className={`block px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`block px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     isRouteActive('/finances/ledger')
-                      ? 'text-blue-600 dark:text-blue-400 font-semibold'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-semibold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/40'
                   }`}
                 >
                   Transaction Ledger
                 </Link>
                 <Link
                   href="/finances/expenses"
-                  className={`block px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`block px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     isRouteActive('/finances/expenses')
-                      ? 'text-blue-600 dark:text-blue-400 font-semibold'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-semibold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/40'
                   }`}
                 >
                   Operating Expenses
                 </Link>
                 <Link
                   href="/finances/settlements"
-                  className={`block px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                  className={`block px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     isRouteActive('/finances/settlements')
-                      ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-semibold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/40'
                   }`}
                 >
                   COD Settlements
@@ -223,26 +211,12 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
             )}
           </div>
 
-          {/* Analytics & Tools */}
-          <div className="space-y-1">
-            <Link
-              href="/analytics"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white transition-all"
-            >
-              <BarChart3 className="w-4 h-4 text-slate-400" />
-              <span>Analytics</span>
-            </Link>
-            <Link
-              href="/discounts"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white transition-all"
-            >
-              <Percent className="w-4 h-4 text-slate-400" />
-              <span>Discounts</span>
-            </Link>
-          </div>
-
           {/* System & Settings */}
           <div className="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
+            <div className="px-3 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+              Settings & Admin
+            </div>
+
             <Link
               href="/settings/couriers"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -254,6 +228,7 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <Truck className={`w-4 h-4 ${isRouteActive('/settings/couriers') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
               <span>Couriers</span>
             </Link>
+
             <Link
               href="/settings/integrations"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -265,6 +240,7 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <Globe className={`w-4 h-4 ${isRouteActive('/settings/integrations') ? 'text-purple-600 dark:text-purple-400' : 'text-slate-400'}`} />
               <span>Store Integrations</span>
             </Link>
+
             <Link
               href="/settings/risk"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -276,6 +252,7 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <ShieldAlert className={`w-4 h-4 ${isRouteActive('/settings/risk') ? 'text-rose-600 dark:text-rose-400' : 'text-slate-400'}`} />
               <span>Fraud & Risk Rules</span>
             </Link>
+
             <Link
               href="/settings/notifications"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -287,6 +264,7 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <Bell className={`w-4 h-4 ${isRouteActive('/settings/notifications') ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400'}`} />
               <span>Notifications</span>
             </Link>
+
             <Link
               href="/settings/roles"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -298,6 +276,7 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <Settings className="w-4 h-4 text-slate-400" />
               <span>Team & Roles</span>
             </Link>
+
             <Link
               href="/settings/billing"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -309,6 +288,7 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <CreditCard className={`w-4 h-4 ${isRouteActive('/settings/billing') ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`} />
               <span>Billing & Plans</span>
             </Link>
+
             <Link
               href="/settings/import"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -320,6 +300,7 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <FileSpreadsheet className={`w-4 h-4 ${isRouteActive('/settings/import') ? 'text-teal-600 dark:text-teal-400' : 'text-slate-400'}`} />
               <span>Data Import & CSV</span>
             </Link>
+
             <Link
               href="/onboarding"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -331,6 +312,7 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <Compass className={`w-4 h-4 ${isRouteActive('/onboarding') ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-400'}`} />
               <span>Setup Wizard</span>
             </Link>
+
             <Link
               href="/admin"
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
@@ -342,35 +324,27 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
               <ShieldCheck className={`w-4 h-4 ${isRouteActive('/admin') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
               <span>Platform Admin</span>
             </Link>
-            <Link
-              href="/help"
-              className="flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white transition-all"
-            >
-              <HelpCircle className="w-4 h-4 text-slate-400" />
-              <span>Help & Support</span>
-            </Link>
           </div>
         </nav>
       </div>
 
-      {/* Upgrade to Premium Card (Bottom banner) */}
-      <div className="p-4">
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-4 text-white shadow-md shadow-blue-500/20 relative overflow-hidden">
-          <div className="w-8 h-8 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-3">
-            <Shield className="w-4 h-4 text-white" />
+      {/* Compact Plan & Status Footer */}
+      <div className="p-3 border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40">
+        <div className="flex items-center justify-between p-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            </div>
+            <div>
+              <p className="text-[11px] font-bold leading-none">Pro Plan</p>
+              <p className="text-[9px] text-blue-100/80 leading-none mt-0.5">Active Subscription</p>
+            </div>
           </div>
-          <h4 className="text-xs font-bold leading-tight mb-1">
-            Upgrade to Premium!
-          </h4>
-          <p className="text-[11px] text-blue-100/80 mb-3 leading-snug">
-            Upgrade your account and unlock all of the benefits.
-          </p>
           <Link
             href="/settings/billing"
-            className="w-full py-2 px-3 rounded-xl bg-white/20 hover:bg-white/30 active:bg-white/40 text-white text-[11px] font-bold backdrop-blur-sm transition-colors flex items-center justify-center gap-1.5"
+            className="text-[10px] font-bold bg-white/20 hover:bg-white/30 px-2 py-1 rounded-lg transition-colors"
           >
-            <Sparkles className="w-3 h-3 text-amber-300" />
-            Upgrade premium
+            Manage
           </Link>
         </div>
       </div>
