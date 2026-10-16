@@ -7,6 +7,51 @@ Versions follow milestone numbers until a public API is established.
 
 ---
 
+## [M11] — 2026-10-16 — Onboarding & Hardening
+
+### Added
+- **Database Schema & DDL Migration (`packages/db/migrations/0013_onboarding_and_imports.sql`):**
+  - Table: `import_batches` tracking entity type (`products`, `customers`, `orders`), file name, total/successful/failed rows, status (`completed`, `reverted`), createdBy, and `imported_ids` for atomic rollback.
+  - Table alters: `tenants.onboarding_completed` (boolean) and `tenants.metadata` (jsonb).
+  - RLS policies enabled and forced on `import_batches` with tenant isolation.
+  - Registered migration index 11 in `packages/db/migrations/meta/_journal.json`.
+- **Shared Schemas & Anti-Formula Injection Engine (`packages/shared`):**
+  - `packages/shared/src/csv-safety.ts`:
+    - `isFormulaInjection`: Detects dangerous spreadsheet formula prefixes (`=`, `+`, `-`, `@`, `\t`, `\r`).
+    - `sanitizeCsvCell`: Escapes cells on export by prepending single quote `'` to prevent DDE / command execution in Excel/Sheets.
+    - `cleanImportCell`: Strips dangerous leading formula characters on intake before database storage.
+  - `packages/shared/src/schemas/imports.ts`: Zod schemas for `importProductRowSchema`, `importCustomerRowSchema`, `importOrderRowSchema`, `dryRunImportSchema`, `commitImportSchema`, `undoBatchSchema`.
+  - `packages/shared/src/schemas/onboarding.ts`: Zod schemas for `storeProfileSchema`, `firstWarehouseSchema`, `initialCourierSchema`, `initialProductSchema`, `saveOnboardingProgressSchema`.
+- **Backend API Modules (`apps/api`):**
+  - `OnboardingService` & `OnboardingController` (`/onboarding`):
+    - `GET /onboarding/status`: Progress tracking, completed flag, step number (1-5), and live store counters.
+    - `POST /onboarding/store-profile`: Step 1 store identity, contact number, registered address.
+    - `POST /onboarding/warehouse`: Step 2 primary warehouse configuration with division & district.
+    - `POST /onboarding/courier`: Step 3 automated courier setup with AES-256-GCM credential encryption.
+    - `POST /onboarding/product`: Step 4 catalog creation with variant & initial stock movements.
+    - `POST /onboarding/complete`: Step 5 onboarding completion lock and audit event.
+  - `ImportsService` & `ImportsController` (`/imports`):
+    - `POST /imports/dry-run`: Pre-import validation previewing valid/invalid rows and errors without modifying database.
+    - `POST /imports/commit`: Transactional batch import creating products/variants/stock, customers/addresses, or historical orders.
+    - `GET /imports/batches`: Paginated import history for tenant.
+    - `POST /imports/batches/:id/undo`: Atomic rollback deleting imported records and updating status to `reverted`.
+  - Customer Privacy / Anonymization:
+    - `POST /customers/:id/anonymize`: GDPR/BD Cyber Security Act customer PII redaction (name, phone, address) while strictly preserving lifetime order totals and financial ledger integrity.
+  - OpenAPI 3.0 Documentation:
+    - Route `GET /api/v1/health/openapi.json` and static spec in `docs/openapi.json`.
+- **Web Frontend (`apps/web`):**
+  - `/onboarding`: Interactive 5-step Setup Wizard with progress stepper, validation, skip options, and celebratory completion card.
+  - `/settings/import`: Data Import Hub with tabs for Products, Customers, and Orders, CSV drag-and-drop upload, Dry-Run preview table with error badges, Commit import, and Undo Last Batch history.
+  - Sidebar navigation updated with direct links to Data Import and Setup Wizard.
+- **Hardening & Operations Documentation:**
+  - `apps/api/test/security/security-review.test.ts`: Automated security review suite certifying tenant boundaries, formula injection defense, and cryptographic key tampering.
+  - `apps/api/test/load/order-spike.test.ts`: High-concurrency order spike test (50 concurrent order placements) and webhook burst deduplication.
+  - `docs/security-review.md`: Complete security audit across all 13 migrations and RLS policies.
+  - `docs/backup-restore.md`: Database backup SOP, AES-256 encryption, and Disaster Recovery PITR drill guide.
+  - `docs/runbook.md`: Production incident runbook with telemetry thresholds, courier outage fallback, and deadlock resolution SOPs.
+
+---
+
 ## [M10] — 2026-10-16 — Subscriptions, Entitlements & Platform Admin
 
 ### Added

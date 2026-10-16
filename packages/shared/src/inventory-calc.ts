@@ -43,15 +43,5 @@ export function calculateWeightedAverageCost(
   return (currentTotal + incomingTotal) / totalQty;
 }
 
-/**
- * Sanitizes CSV cell content against CSV/Formula Injection attacks.
- * Prepends a single quote if the string begins with =, +, -, @, \t, or \r.
- */
-export function sanitizeCsvCell(value: string | number | null | undefined): string {
-  if (value === null || value === undefined) return '';
-  const str = String(value);
-  if (/^[=+\-@\t\r]/.test(str)) {
-    return `'${str}`;
-  }
-  return str;
-}
+export { sanitizeCsvCell } from './csv-safety.js';
+

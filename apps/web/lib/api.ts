@@ -106,4 +106,33 @@ export const api = {
     getTenants: () => api.get<any[]>('/admin/tenants'),
     getStats: () => api.get<any>('/admin/stats'),
   },
+
+  // M11 Onboarding & Setup Wizard
+  onboarding: {
+    getStatus: () => api.get<any>('/onboarding/status'),
+    saveStoreProfile: (body: any) => api.post<any>('/onboarding/store-profile', body),
+    saveWarehouse: (body: any) => api.post<any>('/onboarding/warehouse', body),
+    saveCourier: (body: any) => api.post<any>('/onboarding/courier', body),
+    saveProduct: (body: any) => api.post<any>('/onboarding/product', body),
+    complete: () => api.post<any>('/onboarding/complete'),
+  },
+
+  // M11 Data Import Tools & Undo
+  imports: {
+    dryRun: (body: { entityType: string; fileName: string; rows: any[] }) =>
+      api.post<any>('/imports/dry-run', body),
+    commit: (body: { entityType: string; fileName: string; rows: any[] }) =>
+      api.post<any>('/imports/commit', body),
+    listBatches: (page = 1, limit = 20) =>
+      api.get<any>(`/imports/batches?page=${page}&limit=${limit}`),
+    undoBatch: (batchId: string) =>
+      api.post<any>(`/imports/batches/${batchId}/undo`),
+  },
+
+  // Customer Privacy / Anonymization
+  customers: {
+    anonymize: (customerId: string) =>
+      api.post<any>(`/customers/${customerId}/anonymize`),
+  },
 };
+

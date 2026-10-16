@@ -19,6 +19,8 @@ import { FinanceModule } from './finance/finance.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { PlatformAdminModule } from './platform-admin/platform-admin.module';
+import { ImportsModule } from './imports/imports.module';
+import { OnboardingModule } from './onboarding/onboarding.module';
 
 @Module({
   imports: [
@@ -42,6 +44,8 @@ import { PlatformAdminModule } from './platform-admin/platform-admin.module';
     ExpensesModule,
     SubscriptionsModule,
     PlatformAdminModule,
+    ImportsModule,
+    OnboardingModule,
   ],
 })
 export class AppModule {}

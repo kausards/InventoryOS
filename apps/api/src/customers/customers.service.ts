@@ -431,4 +431,71 @@ export class CustomersService {
       return { success: true };
     });
   }
+
+  async anonymizeCustomer(tenantId: string, customerId: string, userId: string, requestId?: string) {
+    return withSystem(async (tx) => {
+      const existing = (
+        await tx
+          .select()
+          .from(customers)
+          .where(and(eq(customers.tenantId, tenantId), eq(customers.id, customerId)))
+          .limit(1)
+      )[0];
+
+      if (!existing) {
+        throw new NotFoundException(`Customer with ID ${customerId} not found`);
+      }
+
+      // Redact PII on customer record
+      const [updated] = await tx
+        .update(customers)
+        .set({
+          name: 'Anonymized Customer',
+          phone: `00000000000-${customerId.slice(0, 4)}`,
+          normalizedPhone: `+880000000000`,
+          notes: null,
+          updatedAt: new Date().toISOString(),
+        })
+        .where(and(eq(customers.tenantId, tenantId), eq(customers.id, customerId)))
+        .returning();
+
+      // Redact addresses
+      await tx
+        .update(customerAddresses)
+        .set({
+          streetAddress: '[REDACTED]',
+          upazilaThana: '[REDACTED]',
+          area: null,
+          updatedAt: new Date().toISOString(),
+        })
+        .where(and(eq(customerAddresses.tenantId, tenantId), eq(customerAddresses.customerId, customerId)));
+
+      // Remove customer tags
+      await tx
+        .delete(customerTagAssignments)
+        .where(and(eq(customerTagAssignments.tenantId, tenantId), eq(customerTagAssignments.customerId, customerId)));
+
+      // Log privacy/audit event
+      await tx.insert(auditLogs).values({
+        tenantId,
+        actorType: 'user',
+        actorId: userId,
+        action: 'CUSTOMER_ANONYMIZED',
+        entityType: 'customer',
+        entityId: customerId,
+        requestId,
+        after: {
+          previousName: existing.name ? `${existing.name[0]}***` : null,
+          ordersPreserved: existing.totalOrders,
+          spendPreservedMinor: existing.totalSpentMinor,
+        },
+      });
+
+      return {
+        success: true,
+        message: 'Customer PII has been redacted and anonymized according to privacy policy.',
+        customer: updated,
+      };
+    });
+  }
 }

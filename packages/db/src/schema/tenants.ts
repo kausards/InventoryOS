@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, timestamp, boolean, jsonb } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 
 export const tenants = pgTable('tenants', {
@@ -10,8 +10,11 @@ export const tenants = pgTable('tenants', {
   timezone: text('timezone').notNull().default('Asia/Dhaka'),
   currency: text('currency').notNull().default('BDT'),
   status: text('status').notNull().default('active'),
+  onboardingCompleted: boolean('onboarding_completed').notNull().default(false),
+  metadata: jsonb('metadata'),
   createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' })
     .notNull()
     .defaultNow(),
   deletedAt: timestamp('deleted_at', { withTimezone: true, mode: 'string' }),
 });
+

@@ -1,0 +1,153 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Shopeers API",
+    "description": "Enterprise B2B eCommerce & Multi-Channel Inventory Operating System for Bangladesh",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Shopeers Engineering",
+      "email": "support@shopeers.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api/v1",
+      "description": "Local Development Server"
+    },
+    {
+      "url": "https://api.shopeers.com/api/v1",
+      "description": "Production Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "TenantHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-tenant-id"
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": [],
+      "TenantHeader": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "responses": {
+          "200": {
+            "description": "Service is healthy"
+          }
+        }
+      }
+    },
+    "/onboarding/status": {
+      "get": {
+        "summary": "Get Onboarding Progress & Status",
+        "tags": ["Onboarding"],
+        "responses": {
+          "200": { "description": "Returns wizard step and setup counters" }
+        }
+      }
+    },
+    "/onboarding/store-profile": {
+      "post": {
+        "summary": "Step 1: Save Store Profile",
+        "tags": ["Onboarding"],
+        "responses": {
+          "200": { "description": "Store profile saved" }
+        }
+      }
+    },
+    "/onboarding/warehouse": {
+      "post": {
+        "summary": "Step 2: Save Primary Warehouse",
+        "tags": ["Onboarding"],
+        "responses": {
+          "200": { "description": "Warehouse created" }
+        }
+      }
+    },
+    "/onboarding/courier": {
+      "post": {
+        "summary": "Step 3: Save Courier Credentials",
+        "tags": ["Onboarding"],
+        "responses": {
+          "200": { "description": "Courier credentials encrypted and saved" }
+        }
+      }
+    },
+    "/onboarding/product": {
+      "post": {
+        "summary": "Step 4: Save Initial Product & Stock",
+        "tags": ["Onboarding"],
+        "responses": {
+          "200": { "description": "Product and inventory balances created" }
+        }
+      }
+    },
+    "/onboarding/complete": {
+      "post": {
+        "summary": "Step 5: Mark Onboarding Completed",
+        "tags": ["Onboarding"],
+        "responses": {
+          "200": { "description": "Tenant onboarding marked completed" }
+        }
+      }
+    },
+    "/imports/dry-run": {
+      "post": {
+        "summary": "Dry-run validate CSV rows against formula injection & schemas",
+        "tags": ["Imports"],
+        "responses": {
+          "200": { "description": "Returns validation results, row errors, and preview" }
+        }
+      }
+    },
+    "/imports/commit": {
+      "post": {
+        "summary": "Commit validated CSV data and create tracked import batch",
+        "tags": ["Imports"],
+        "responses": {
+          "201": { "description": "Batch committed successfully" }
+        }
+      }
+    },
+    "/imports/batches": {
+      "get": {
+        "summary": "List historical import batches",
+        "tags": ["Imports"],
+        "responses": {
+          "200": { "description": "Paginated list of import batches" }
+        }
+      }
+    },
+    "/imports/batches/{id}/undo": {
+      "post": {
+        "summary": "Undo / Rollback an import batch and delete imported records",
+        "tags": ["Imports"],
+        "responses": {
+          "200": { "description": "Batch successfully reverted" }
+        }
+      }
+    },
+    "/customers/{id}/anonymize": {
+      "post": {
+        "summary": "GDPR / Privacy PII redaction and irreversible customer anonymization",
+        "tags": ["Customers"],
+        "responses": {
+          "200": { "description": "Customer PII redacted, order aggregates preserved" }
+        }
+      }
+    }
+  }
+}

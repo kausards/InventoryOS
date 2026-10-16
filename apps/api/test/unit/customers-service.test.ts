@@ -115,4 +115,87 @@ describe('CustomersService - CRM & Normalization', () => {
       NotFoundException
     );
   });
+
+  it('anonymizes customer PII while preserving financial aggregates and order counts', async () => {
+    const mockTx = {
+      select: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+      insert: vi.fn(),
+    };
+    vi.spyOn(dbModule, 'withSystem').mockImplementation(async (cb: any) => cb(mockTx));
+
+    // 1. Select existing customer
+    mockTx.select.mockReturnValueOnce({
+      from: vi.fn().mockReturnThis(),
+      where: vi.fn().mockReturnThis(),
+      limit: vi.fn().mockResolvedValue([
+        {
+          id: 'cust-100',
+          name: 'Rahim Chowdhury',
+          phone: '01711223344',
+          totalOrders: 15,
+          totalSpentMinor: BigInt(4500000), // 45,000 BDT
+        },
+      ]),
+    });
+
+    // 2. Update customer record (redact name & phone)
+    mockTx.update.mockReturnValueOnce({
+      set: vi.fn().mockReturnValue({
+        where: vi.fn().mockReturnValue({
+          returning: vi.fn().mockResolvedValue([
+            {
+              id: 'cust-100',
+              name: 'Anonymized Customer',
+              phone: '00000000000-cust',
+              totalOrders: 15,
+              totalSpentMinor: BigInt(4500000),
+            },
+          ]),
+        }),
+      }),
+    });
+
+    // 3. Update customer address (redact streetAddress)
+    mockTx.update.mockReturnValueOnce({
+      set: vi.fn().mockReturnValue({
+        where: vi.fn().mockResolvedValue({}),
+      }),
+    });
+
+    // 4. Delete tag assignments
+    mockTx.delete.mockReturnValueOnce({
+      where: vi.fn().mockResolvedValue({}),
+    });
+
+    // 5. Insert audit log
+    mockTx.insert.mockReturnValueOnce({
+      values: vi.fn().mockResolvedValue({}),
+    });
+
+    const res = await service.anonymizeCustomer('t-1', 'cust-100', 'admin-1', 'req-123');
+
+    expect(res.success).toBe(true);
+    expect(res.customer.name).toBe('Anonymized Customer');
+    expect(res.customer.totalOrders).toBe(15);
+    expect(res.customer.totalSpentMinor).toBe(BigInt(4500000));
+  });
+
+  it('throws NotFoundException when attempting to anonymize non-existent customer', async () => {
+    const mockTx = {
+      select: vi.fn(),
+    };
+    vi.spyOn(dbModule, 'withSystem').mockImplementation(async (cb: any) => cb(mockTx));
+
+    mockTx.select.mockReturnValueOnce({
+      from: vi.fn().mockReturnThis(),
+      where: vi.fn().mockReturnThis(),
+      limit: vi.fn().mockResolvedValue([]),
+    });
+
+    await expect(
+      service.anonymizeCustomer('t-1', 'non-existent', 'admin-1')
+    ).rejects.toThrow(NotFoundException);
+  });
 });

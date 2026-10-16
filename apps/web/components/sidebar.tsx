@@ -26,6 +26,8 @@ import {
   Bell,
   CreditCard,
   ShieldCheck,
+  FileSpreadsheet,
+  Compass,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -306,6 +308,28 @@ export function Sidebar({ activeTenantName = 'Growthomic Store' }: SidebarProps)
             >
               <CreditCard className={`w-4 h-4 ${isRouteActive('/settings/billing') ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}`} />
               <span>Billing & Plans</span>
+            </Link>
+            <Link
+              href="/settings/import"
+              className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                isRouteActive('/settings/import')
+                  ? 'bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <FileSpreadsheet className={`w-4 h-4 ${isRouteActive('/settings/import') ? 'text-teal-600 dark:text-teal-400' : 'text-slate-400'}`} />
+              <span>Data Import & CSV</span>
+            </Link>
+            <Link
+              href="/onboarding"
+              className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                isRouteActive('/onboarding')
+                  ? 'bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <Compass className={`w-4 h-4 ${isRouteActive('/onboarding') ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-400'}`} />
+              <span>Setup Wizard</span>
             </Link>
             <Link
               href="/admin"

@@ -120,4 +120,15 @@ export class CustomersController {
   ) {
     return this.customersService.removeTag(req.tenantId, customerId, tagId);
   }
+
+  @Post(':id/anonymize')
+  @RequirePermissions(PERMISSIONS.CUSTOMERS_EDIT)
+  async anonymizeCustomer(@Req() req: any, @Param('id') id: string) {
+    return this.customersService.anonymizeCustomer(
+      req.tenantId,
+      id,
+      req.user.id,
+      req.headers['x-request-id']
+    );
+  }
 }
